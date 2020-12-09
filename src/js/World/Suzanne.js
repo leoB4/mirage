@@ -16,8 +16,8 @@ export default class Suzanne {
     this.suzanne = this.models.suzanne.scene
     this.suzanne.castShadow = false
     this.suzanne.receiveShadow = true
-    console.log(this.suzanne);
     this.container.add(this.suzanne)
+    this.container.position.x = 5
   }
   setMovement() {
     this.time.on('tick', () => {

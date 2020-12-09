@@ -1,4 +1,5 @@
-import { Fog, PCFSoftShadowMap, Scene, WebGLRenderer } from 'three'
+import { Fog, PCFSoftShadowMap, Scene, WebGLRenderer, Clock } from 'three'
+import {EffectComposer, BloomEffect, EffectPass, RenderPass, GodRaysEffect} from 'postprocessing'
 import * as dat from 'dat.gui'
 
 import Sizes from '@tools/Sizes.js'
@@ -23,6 +24,8 @@ export default class App {
     this.setConfig()
     this.setRenderer()
     this.setCamera()
+    this.setComposer()
+    this.setBloom()
     this.setWorld()
   }
   setRenderer() {
@@ -31,9 +34,12 @@ export default class App {
     this.scene.fog = new Fog(0x000000,0.025,60)
     // Set renderer
     this.renderer = new WebGLRenderer({
+      powerPreference: "high-performance",
       canvas: this.canvas,
       alpha: true,
-      antialias: true,
+      antialias: false,
+      stencil: false,
+      depth: false,
     })
 
     console.log(this.renderer);
@@ -53,8 +59,11 @@ export default class App {
     this.renderer.shadowMap.enabled = true
     this.renderer.shadowMap.type = PCFSoftShadowMap
     // Set RequestAnimationFrame with 60ips
+    console.log(this.composer);
     this.time.on('tick', () => {
       this.renderer.render(this.scene, this.camera.camera)
+      this.composer.render(this.time.delta) 
+
     })
   }
   setCamera() {
@@ -77,10 +86,30 @@ export default class App {
     })
     // Add world to scene
     this.scene.add(this.world.container)
+    // this.setGodRay()
   }
   setConfig() {
     if (window.location.hash === '#debug') {
       this.debug = new dat.GUI({ width: 420 })
     }
+  }
+
+  setComposer() {
+    this.composer = new EffectComposer(this.renderer)
+    this.composer.addPass(new RenderPass(this.scene, this.camera.camera))
+  }
+
+  setBloom() {
+    this.bloomEffect = new BloomEffect({
+      intensity: 1,
+      luminanceThreshold: 0.25,
+    })
+    this.bloomEffect.blurPass.scale = 5
+    this.composer.addPass(new EffectPass(this.camera.camera, this.bloomEffect))
+  }
+
+  setGodRay() {
+    console.log(this.scene);
+    this.composer.addPass(new EffectPass(this.camera.camera, new GodRaysEffect(this.camera.camera, this.world.container.parent.children[1].children[1])))
   }
 }

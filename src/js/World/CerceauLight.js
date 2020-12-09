@@ -3,6 +3,7 @@ import { Object3D, DirectionalLight,PointLight, Color, CylinderBufferGeometry, M
 export default class CerceauLight {
   constructor(options) {
     // Set options
+    this.time = options.time
     this.debug = options.debug
 
     // Set up
