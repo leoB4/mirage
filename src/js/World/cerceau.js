@@ -4,6 +4,7 @@ export default class Cerceau {
   constructor(options) {
     // Set options
     this.debug = options.debug
+    this.time = options.time
 
     // Set up
     this.container = new Object3D()
@@ -16,6 +17,7 @@ export default class Cerceau {
 
     this.createCerceau()
     this.createLight()
+    this.setMovement()
 
   }
   createCerceau() {
@@ -39,7 +41,7 @@ export default class Cerceau {
     for (let light = 0; light < 25; light++){
       const color = new Color(`hsl(${light/25*255}, 100%, 50%)`)
       this.lights[light] = new PointLight(color,1)
-      this.lights[light].distance = 10
+      this.lights[light].distance = 15
       this.lights[light].position.set(9.8 * Math.cos(Math.PI*2* light / 25  ),0,9.8 * Math.sin(Math.PI*2* light / 25))
       this.lights[light].add(new Mesh( sphere, new MeshBasicMaterial( {color} ) ))
       
@@ -47,6 +49,14 @@ export default class Cerceau {
     
 
     this.container.add(...this.lights)
+  }
+
+  setMovement() {
+    this.time.on('tick', () => {
+      this.container.rotation.y += 0.005
+      this.container.rotation.x += 0.005
+      this.container.rotation.z += 0.005
+    })
   }
   
 }

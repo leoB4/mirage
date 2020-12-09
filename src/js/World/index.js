@@ -28,8 +28,8 @@ export default class World {
     this.setAmbientLight()
     // this.setPointLight()
     this.setCerceau()
-    // this.setSuzanne()
-    this.setWall()
+    this.setSuzanne()
+    // this.setWall()
   }
   setLoader() {
     this.modelsLoaded = false
@@ -91,6 +91,7 @@ export default class World {
       })
     }
   }
+  
   setAmbientLight() {
     this.light = new AmbientLightSource({
       debug: this.debugFolder,
@@ -113,6 +114,7 @@ export default class World {
   setCerceau() {
     this.cerceau = new Cerceau({
       debug: this.debugFolder,
+      time: this.time,
     })
     this.container.add(this.cerceau.container)
   }
