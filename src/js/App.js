@@ -1,4 +1,4 @@
-import { Scene, WebGLRenderer } from 'three'
+import { Fog, PCFSoftShadowMap, Scene, WebGLRenderer } from 'three'
 import * as dat from 'dat.gui'
 
 import Sizes from '@tools/Sizes.js'
@@ -28,12 +28,16 @@ export default class App {
   setRenderer() {
     // Set scene
     this.scene = new Scene()
+    this.scene.fog = new Fog(0x000000,0.025,60)
     // Set renderer
     this.renderer = new WebGLRenderer({
       canvas: this.canvas,
       alpha: true,
       antialias: true,
     })
+
+    console.log(this.renderer);
+    
     // Set background color
     this.renderer.setClearColor(0x212121, 1)
     // Set renderer pixel ratio & sizes
@@ -46,9 +50,9 @@ export default class App {
         this.sizes.viewport.height
       )
     })
+    this.renderer.shadowMap.type = PCFSoftShadowMap
     // Set RequestAnimationFrame with 60ips
     this.time.on('tick', () => {
-      this.renderer.render(this.scene, this.camera.camera)
     })
   }
   setCamera() {

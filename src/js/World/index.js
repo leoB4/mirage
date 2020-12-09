@@ -1,8 +1,10 @@
 import { Object3D } from 'three'
 
 import AmbientLightSource from './AmbientLight.js'
+import Cerceau from './cerceau.js'
 import PointLightSource from './PointLight.js'
 import Suzanne from './Suzanne.js'
+import Plan from './Plan'
 
 export default class World {
   constructor(options) {
@@ -24,8 +26,10 @@ export default class World {
   }
   init() {
     this.setAmbientLight()
-    this.setPointLight()
-    this.setSuzanne()
+    // this.setPointLight()
+    this.setCerceau()
+    // this.setSuzanne()
+    this.setWall()
   }
   setLoader() {
     this.modelsLoaded = false
@@ -105,5 +109,15 @@ export default class World {
       models: this.models.src,
     })
     this.container.add(this.suzanne.container)
+  }
+  setCerceau() {
+    this.cerceau = new Cerceau({
+      debug: this.debugFolder,
+    })
+    this.container.add(this.cerceau.container)
+  }
+  setWall() {
+    this.wall = new Plan()
+    this.container.add(this.wall.container)
   }
 }

@@ -14,6 +14,9 @@ export default class Suzanne {
   }
   createSuzanne() {
     this.suzanne = this.models.suzanne.scene
+    this.suzanne.castShadow = false
+    this.suzanne.receiveShadow = true
+    console.log(this.suzanne);
     this.container.add(this.suzanne)
   }
   setMovement() {
