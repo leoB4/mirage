@@ -1,4 +1,4 @@
-import { Fog, PCFSoftShadowMap, Scene, WebGLRenderer, Clock } from 'three'
+import { Fog, PCFSoftShadowMap, Scene, WebGLRenderer, Clock, FogExp2 } from 'three'
 import {EffectComposer, BloomEffect, EffectPass, RenderPass, GodRaysEffect} from 'postprocessing'
 import * as dat from 'dat.gui'
 
@@ -31,7 +31,7 @@ export default class App {
   setRenderer() {
     // Set scene
     this.scene = new Scene()
-    this.scene.fog = new Fog(0x000000,0.025,60)
+    this.scene.fog = new FogExp2(0x998162,0.0062)
     // Set renderer
     this.renderer = new WebGLRenderer({
       powerPreference: "high-performance",
@@ -45,7 +45,7 @@ export default class App {
     console.log(this.renderer);
     
     // Set background color
-    this.renderer.setClearColor(0x212121, 1)
+    this.renderer.setClearColor(0x998162, 1)
     // Set renderer pixel ratio & sizes
     this.renderer.setPixelRatio(window.devicePixelRatio)
     this.renderer.setSize(this.sizes.viewport.width, this.sizes.viewport.height)
@@ -101,7 +101,8 @@ export default class App {
   setBloom() {
     this.bloomEffect = new BloomEffect({
       intensity: 1,
-      luminanceThreshold: 0.25,
+      luminanceThreshold: 0.8,
+      luminanceSmoothing: 0.1,
     })
     this.bloomEffect.blurPass.scale = 5
     this.composer.addPass(new EffectPass(this.camera.camera, this.bloomEffect))

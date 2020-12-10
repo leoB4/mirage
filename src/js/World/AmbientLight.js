@@ -7,7 +7,7 @@ export default class AmbientLightSource {
 
     // Set up
     this.container = new Object3D()
-    this.params = { color: 0xFFFFFF }
+    this.params = { color: 0x505050 }
 
     this.createAmbientLight()
 

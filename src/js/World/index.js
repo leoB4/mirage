@@ -4,7 +4,9 @@ import AmbientLightSource from './AmbientLight.js'
 import Cerceau from './cerceau.js'
 import PointLightSource from './PointLight.js'
 import Suzanne from './Suzanne.js'
+import Dune from './Dune.js'
 import Plan from './Plan'
+import SpotDune from './spotDune.js'
 
 export default class World {
   constructor(options) {
@@ -28,7 +30,10 @@ export default class World {
     this.setAmbientLight()
     // this.setPointLight()
     this.setCerceau()
-    this.setSuzanne()
+    // this.setSuzanne()
+    this.setDune()
+    this.setSpotDune()
+    // this.setSpotDune2()
     // this.setWall()
   }
   setLoader() {
@@ -91,12 +96,30 @@ export default class World {
       })
     }
   }
-  
+
   setAmbientLight() {
     this.light = new AmbientLightSource({
       debug: this.debugFolder,
     })
     this.container.add(this.light.container)
+  }
+  setSpotDune() {
+    this.spotDune = new SpotDune({
+      debug: this.debugFolder,
+      position: {x:150,y:50,z:100},
+      intensity: 2,
+      distanceSpot: 2000,
+      angleSpot: 0.75
+    })
+    this.container.add(this.spotDune.container)
+  }
+  setSpotDune2() {
+    this.spotDune = new SpotDune({
+      debug: this.debugFolder,
+      position: {x:0,y:50,z:-150},
+      
+    })
+    this.container.add(this.spotDune.container)
   }
   setPointLight() {
     this.light = new PointLightSource({
@@ -111,9 +134,17 @@ export default class World {
     })
     this.container.add(this.suzanne.container)
   }
+  setDune() {
+    this.dunes = new Dune({
+      time: this.time,
+      models: this.models.src,
+    })
+    this.container.add(this.dunes.container)
+  }
   setCerceau() {
     this.cerceau = new Cerceau({
       debug: this.debugFolder,
+      models: this.models.src,
       time: this.time,
     })
     this.container.add(this.cerceau.container)
