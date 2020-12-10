@@ -30,11 +30,8 @@ export default class World {
     this.setAmbientLight()
     // this.setPointLight()
     this.setCerceau()
-    // this.setSuzanne()
     this.setDune()
     this.setSpotDune()
-    // this.setSpotDune2()
-    // this.setWall()
   }
   setLoader() {
     this.modelsLoaded = false
@@ -107,17 +104,9 @@ export default class World {
     this.spotDune = new SpotDune({
       debug: this.debugFolder,
       position: {x:150,y:50,z:100},
-      intensity: 2,
+      intensity: 1.5,
       distanceSpot: 2000,
-      angleSpot: 0.75
-    })
-    this.container.add(this.spotDune.container)
-  }
-  setSpotDune2() {
-    this.spotDune = new SpotDune({
-      debug: this.debugFolder,
-      position: {x:0,y:50,z:-150},
-      
+      angleSpot: 0.50
     })
     this.container.add(this.spotDune.container)
   }
