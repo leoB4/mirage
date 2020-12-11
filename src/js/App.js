@@ -4,8 +4,7 @@ import * as dat from 'dat.gui'
 
 import Sizes from '@tools/Sizes.js'
 import Time from '@tools/Time.js'
-import Models from '@tools/ModelLoader.js'
-import Textures from '@tools/TextureLoader.js'
+import Loader from '@tools/Loader.js'
 
 import Camera from './Camera.js'
 import World from '@world/index.js'
@@ -18,8 +17,7 @@ export default class App {
     // Set up
     this.time = new Time()
     this.sizes = new Sizes()
-    this.models = new Models()
-    this.textures = new Textures()
+    this.assets = new Loader()
 
     this.setConfig()
     this.setRenderer()
@@ -77,8 +75,9 @@ export default class App {
     this.world = new World({
       time: this.time,
       debug: this.debug,
-      models: this.models,
-      textures: this.textures,
+      assets: this.assets,
+      models: this.assets.models,
+      textures: this.assets.textures,
     })
     // Add world to scene
     this.scene.add(this.world.container)
@@ -102,8 +101,13 @@ export default class App {
       luminanceSmoothing: 0.9,
     })
     this.bloomEffect.blurPass.kernelSize = KernelSize.VERY_LARGE
+    
+    this.assets.on('ressourcesReady', () => {
+      this.bloomEffect.selection = this.world.container.children[1].children[0]
+      console.log(this.bloomEffect.selection);
+      this.composer.addPass(new EffectPass(this.camera.camera, this.bloomEffect))
+    })
     // this.bloomEffect.ignoreBackground = true
-    this.composer.addPass(new EffectPass(this.camera.camera, this.bloomEffect))
   }
 
   setGodRay() {
