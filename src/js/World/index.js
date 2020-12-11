@@ -15,6 +15,7 @@ export default class World {
     this.debug = options.debug
     this.models = options.models
     this.textures = options.textures
+    this.listener = options.listener
 
     // Set up
     this.container = new Object3D()
@@ -32,6 +33,7 @@ export default class World {
     this.setCerceau()
     this.setDune()
     this.setSpotDune()
+    this.setWall()
   }
   setLoader() {
     this.modelsLoaded = false
@@ -135,6 +137,7 @@ export default class World {
       debug: this.debugFolder,
       models: this.models.src,
       time: this.time,
+      listener: this.listener,
     })
     this.container.add(this.cerceau.container)
   }

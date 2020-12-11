@@ -1,4 +1,6 @@
-import { Object3D,PointLight, Color, CylinderBufferGeometry, MeshBasicMaterial, MeshPhongMaterial, Mesh, DoubleSide, SphereBufferGeometry } from 'three'
+import { Object3D,PointLight, Color, CylinderBufferGeometry, MeshBasicMaterial, MeshPhongMaterial, Mesh, DoubleSide, SphereBufferGeometry, PositionalAudio, AudioLoader } from 'three'
+import AmbianceSound from '@sounds/TEST1.mp3'
+import {PositionalAudioHelper} from '@tools/PositionalAudioHelper'
 
 export default class Cerceau {
   constructor(options) {
@@ -6,6 +8,7 @@ export default class Cerceau {
     this.debug = options.debug
     this.time = options.time
     this.models = options.models
+    this.listener = options.listener
 
     // Set up
     this.container = new Object3D()
@@ -24,6 +27,22 @@ export default class Cerceau {
 
   }
   createCerceau() {
+
+    // create the PositionalAudio object (passing in the listener)
+    this.sound = new PositionalAudio( this.listener );
+
+    // load a sound and set it as the PositionalAudio object's buffer
+    const audioLoader = new AudioLoader();
+    audioLoader.load( AmbianceSound, (buffer)=> {
+      this.sound.setBuffer( buffer );
+      this.sound.setRefDistance( 10 );
+      this.sound.setLoop(true)
+      this.sound.play();
+    });
+
+    this.helper = new PositionalAudioHelper( this.sound, 10 );
+    this.sound.add( this.helper );
+
     this.cerceau = this.models.cerceau.scene
     this.cerceau.position.set(
       this.params.positionX,
@@ -31,6 +50,7 @@ export default class Cerceau {
       this.params.positionZ
       )
     this.cerceau.scale.set(50,50,50)
+    this.cerceau.add(this.sound)
     
     const circleLum = new CylinderBufferGeometry(6.76,6.76,0.9,45,1,true)
     const materialS = new MeshPhongMaterial( { color: 0xdedede, shininess: 0, side: DoubleSide} ) 

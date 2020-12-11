@@ -1,4 +1,4 @@
-import { Object3D, SpotLight, Color, PlaneBufferGeometry, MeshPhongMaterial, Mesh, DoubleSide} from 'three'
+import { Object3D, SpotLight, Color, PlaneBufferGeometry, MeshPhongMaterial, Mesh, DoubleSide, BoxBufferGeometry} from 'three'
 
 export default class Plan {
   constructor() {
@@ -9,7 +9,7 @@ export default class Plan {
     this.createPlan()
   }
   createPlan() {
-    this.wall = new PlaneBufferGeometry(30,30,30)
+    this.wall = new BoxBufferGeometry(30,30,5)
     this.wallMat = new MeshPhongMaterial(
         {
             color: 0xaeaeae,
@@ -23,7 +23,7 @@ export default class Plan {
     this.meshWall.receiveShadow = true
     this.container.add(this.meshWall)
         
-    this.container.position.z = -10
+    this.container.position.z = -30
   }
   
 }

@@ -1,4 +1,4 @@
-import { Fog, PCFSoftShadowMap, Scene, WebGLRenderer, Clock, FogExp2 } from 'three'
+import { Fog, PCFSoftShadowMap, Scene, WebGLRenderer, Clock, FogExp2, AudioListener } from 'three'
 import {EffectComposer, BloomEffect, EffectPass, RenderPass, GodRaysEffect} from 'postprocessing'
 import * as dat from 'dat.gui'
 
@@ -25,6 +25,7 @@ export default class App {
     this.setRenderer()
     this.setCamera()
     this.setComposer()
+    this.setAudioListener()
     this.setBloom()
     this.setWorld()
   }
@@ -39,7 +40,7 @@ export default class App {
       alpha: true,
       antialias: false,
       stencil: false,
-      depth: false,
+      depth: true,
     })
 
     console.log(this.renderer);
@@ -82,6 +83,7 @@ export default class App {
       debug: this.debug,
       models: this.models,
       textures: this.textures,
+      listener: this.listener
     })
     // Add world to scene
     this.scene.add(this.world.container)
@@ -111,5 +113,9 @@ export default class App {
   setGodRay() {
     console.log(this.scene);
     this.composer.addPass(new EffectPass(this.camera.camera, new GodRaysEffect(this.camera.camera, this.world.container.parent.children[1].children[1])))
+  }
+  setAudioListener() {
+    this.listener = new AudioListener();
+    this.camera.camera.add( this.listener );
   }
 }
