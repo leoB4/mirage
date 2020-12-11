@@ -6,6 +6,7 @@ export default class Cerceau {
     this.debug = options.debug
     this.time = options.time
     this.models = options.models
+    this.BLOOM_SCENE = options.BLOOM_SCENE
 
     // Set up
     this.container = new Object3D()
@@ -41,6 +42,7 @@ export default class Cerceau {
       this.params.positionZ
       )
     this.bloomCircle.rotation.z = Math.PI/2
+    this.bloomCircle.layers.enable(this.BLOOM_SCENE)
 
     this.container.add(this.bloomCircle, this.cerceau)
 
@@ -57,7 +59,7 @@ export default class Cerceau {
       this["light-"+index].position.set(0, 6.7 * Math.cos(Math.PI*2* index / 25  ), 6.7 * Math.sin(Math.PI*2* index / 25))
       this["light-"+index].add(new Mesh( sphere, new MeshBasicMaterial( {color} ) ))
       this.lights.push("light-"+index)
-      this["light-"+index].layers.enable(10)
+      this["light-"+index].layers.enable(this.BLOOM_SCENE)
     }
     this.container.add(...this.lights.map(light=>this[light]))
   }

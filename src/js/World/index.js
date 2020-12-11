@@ -14,6 +14,7 @@ export default class World {
     this.time = options.time
     this.debug = options.debug
     this.assets = options.assets
+    this.BLOOM_SCENE = options.BLOOM_SCENE
 
     // Set up
     this.container = new Object3D()
@@ -50,7 +51,7 @@ export default class World {
 
       this.assets.on('ressourcesReady', () => {
         this.init()
-        
+
           this.loadDiv.style.opacity = 0
           setTimeout(() => {
             this.loadDiv.remove()
@@ -100,6 +101,7 @@ export default class World {
       debug: this.debugFolder,
       models: this.assets.models,
       time: this.time,
+      BLOOM_SCENE: this.BLOOM_SCENE
     })
     this.container.add(this.cerceau.container)
   }
