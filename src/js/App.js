@@ -1,5 +1,5 @@
 import { Fog, PCFSoftShadowMap, Scene, WebGLRenderer, Clock, FogExp2 } from 'three'
-import {EffectComposer, BloomEffect, EffectPass, RenderPass, GodRaysEffect, KernelSize} from 'postprocessing'
+import {EffectComposer, SelectiveBloomEffect, BloomEffect, EffectPass, RenderPass, GodRaysEffect, KernelSize} from 'postprocessing'
 import * as dat from 'dat.gui'
 
 import Sizes from '@tools/Sizes.js'
@@ -29,7 +29,7 @@ export default class App {
   setRenderer() {
     // Set scene
     this.scene = new Scene()
-    this.scene.fog = new FogExp2(0x998162,0.0062)
+    // this.scene.fog = new FogExp2(0x998162,0.0062)
     // Set renderer
     this.renderer = new WebGLRenderer({
       powerPreference: "high-performance",
@@ -41,7 +41,7 @@ export default class App {
     })
 
     // Set background color
-    this.renderer.setClearColor(0x505050, 1)
+    this.renderer.setClearColor(0x998162, 1)
     // Set renderer pixel ratio & sizes
     this.renderer.setPixelRatio(window.devicePixelRatio)
     this.renderer.setSize(this.sizes.viewport.width, this.sizes.viewport.height)
@@ -55,7 +55,6 @@ export default class App {
     this.renderer.shadowMap.type = PCFSoftShadowMap
     // Set RequestAnimationFrame with 60ips
     this.time.on('tick', () => {
-      this.camera.camera.layers.set(1)
       this.renderer.render(this.scene, this.camera.camera)
       this.composer.render(this.time.delta)
     })
@@ -95,19 +94,19 @@ export default class App {
   }
 
   setBloom() {
-    this.bloomEffect = new BloomEffect({
-      intensity: 10,
-      luminanceThreshold: 0.2,
+    this.bloomEffect = new SelectiveBloomEffect(this.scene, this.camera.camera, {
+      intensity: 15,
+      luminanceThreshold: 0.4,
       luminanceSmoothing: 0.9,
     })
     this.bloomEffect.blurPass.kernelSize = KernelSize.VERY_LARGE
-    
+    this.bloomEffect.ignoreBackground = true
+
     this.assets.on('ressourcesReady', () => {
-      this.bloomEffect.selection = this.world.container.children[1].children[0]
-      console.log(this.bloomEffect.selection);
+      this.bloomEffect.selection.add(this.world.container.children[1].children[0])
       this.composer.addPass(new EffectPass(this.camera.camera, this.bloomEffect))
     })
-    // this.bloomEffect.ignoreBackground = true
+
   }
 
   setGodRay() {
