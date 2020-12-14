@@ -98,7 +98,8 @@ export default class App {
       assets: this.assets,
       models: this.assets.models,
       textures: this.assets.textures,
-      BLOOM_SCENE
+      BLOOM_SCENE,
+      listener: this.listener
     })
     // Add world to scene
     this.scene.add(this.world.container)
@@ -157,6 +158,7 @@ export default class App {
   }
   setAudioListener() {
     this.listener = new AudioListener();
+    console.log(this.listener);
     this.camera.camera.add( this.listener );
   }
 }

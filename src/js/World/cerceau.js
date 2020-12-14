@@ -30,6 +30,7 @@ export default class Cerceau {
   createCerceau() {
 
     // create the PositionalAudio object (passing in the listener)
+    console.log(this.listener);
     this.sound = new PositionalAudio( this.listener );
 
     // load a sound and set it as the PositionalAudio object's buffer

@@ -99,11 +99,12 @@ export default class World {
     this.container.add(this.dunes.container)
   }
   setCerceau() {
+    console.log(this.listener);
     this.cerceau = new Cerceau({
       debug: this.debugFolder,
       models: this.assets.models,
       time: this.time,
-      BLOOM_SCENE: this.BLOOM_SCENE
+      BLOOM_SCENE: this.BLOOM_SCENE,
       listener: this.listener,
     })
     this.container.add(this.cerceau.container)
