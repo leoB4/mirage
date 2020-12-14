@@ -31,7 +31,7 @@ export default class SpotDune {
     this.light.position.set(this.position.x, this.position.y, this.position.z)
 
     this.geometry = new PlaneBufferGeometry( 5, 20, 32 );
-    this.material = new MeshBasicMaterial( {color: 0xffff00, opacity: 0} );
+    this.material = new MeshBasicMaterial( {color: 0xffff00, opacity: 0, transparent: true} );
     this.plane = new Mesh( this.geometry, this.material );
     this.plane.position.set(-85,-10,85)
     this.plane.rotation.y = Math.PI/2

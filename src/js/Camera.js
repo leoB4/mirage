@@ -12,7 +12,7 @@ export default class Camera {
     this.container = new Object3D()
 
     this.setCamera()
-    this.setPosition()
+    // this.setPosition()
     this.setOrbitControls()
   }
   setCamera() {
@@ -23,6 +23,7 @@ export default class Camera {
       0.1,
       1000
     )
+    this.setPosition()
     this.container.add(this.camera)
     // Change camera aspect on resize
     this.sizes.on('resize', () => {
@@ -34,11 +35,9 @@ export default class Camera {
   }
   setPosition() {
     // Set camera position
-    this.camera.position.x = 0
-    this.camera.position.y = 2
-    this.camera.position.z = 100
-    this.container.rotation.y = Math.PI/2
-    this.camera.lookAt(0,0,0)
+    this.camera.position.x = -16.397377014160156
+    this.camera.position.y = -37.26016616821289
+    this.camera.position.z = -0.4423207938671112
   }
   setOrbitControls() {
     // Set orbit control

@@ -1,4 +1,4 @@
-import { Object3D, PlaneBufferGeometry, MeshBasicMaterial, Mesh, DoubleSide } from 'three'
+import { Object3D } from 'three'
 
 export default class Dune {
   constructor(options) {
