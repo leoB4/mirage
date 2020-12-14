@@ -13,8 +13,8 @@ export default class World {
     // Set options
     this.time = options.time
     this.debug = options.debug
-    this.models = options.models
-    this.textures = options.textures
+    this.assets = options.assets
+    this.BLOOM_SCENE = options.BLOOM_SCENE
     this.listener = options.listener
 
     // Set up
@@ -36,62 +36,28 @@ export default class World {
     this.setWall()
   }
   setLoader() {
-    this.modelsLoaded = false
-    this.texturesLoaded = false
+    this.loadDiv = document.querySelector('.loadScreen')
+    this.loadModels = this.loadDiv.querySelector('.load')
+    this.progress = this.loadDiv.querySelector('.progress')
 
-    this.loadDiv = document.createElement('div')
-    this.loadDiv.classList.add('loadScreen')
-    document.body.append(this.loadDiv)
-
-    this.loadModels = document.createElement('h1')
-    this.loadModels.innerHTML = 'Loading models...'
-    this.loadModels.classList.add('load')
-    this.loadDiv.append(this.loadModels)
-
-    this.loadTextures = document.createElement('h1')
-    this.loadTextures.innerHTML = 'Loading textures...'
-    this.loadTextures.classList.add('load')
-    this.loadDiv.append(this.loadTextures)
-
-    this.enter = document.createElement('button')
-    this.enter.innerHTML = '...'
-    this.enter.classList.add('start')
-    this.loadDiv.append(this.enter)
-
-    if(this.models.modelsReady){
-      this.modelsLoaded = true
-      this.loadModels.innerHTML = 'Models ok'
-      this.checkLoad()
+    if (this.assets.total === 0) {
+      this.init()
+      this.loadDiv.remove()
     } else {
-      this.models.on('modelsReady', () => {
-        this.modelsLoaded = true
-        this.loadModels.innerHTML = 'Models ok'
-        this.checkLoad()
+      this.assets.on('ressourceLoad', () => {
+        this.progress.style.width = this.loadModels.innerHTML = `${
+          Math.floor((this.assets.done / this.assets.total) * 100) +
+          Math.floor((1 / this.assets.total) * this.assets.currentPercent)
+        }%`
       })
-    }
 
-    if (this.textures.texturesReady) {
-      this.texturesLoaded = true
-      this.loadTextures.innerHTML = 'Textures ok'
-      this.checkLoad()
-    } else {
-      this.textures.on('texturesReady', () => {
-        this.texturesLoaded = true
-        this.loadTextures.innerHTML = 'Textures ok'
-        this.checkLoad()
-      })
-    }
-  }
-  checkLoad() {
-    if (this.modelsLoaded === this.texturesLoaded === true) {
-      this.enter.innerHTML = 'Start'
-
-      this.enter.addEventListener('click', () => {
+      this.assets.on('ressourcesReady', () => {
         this.init()
-        this.loadDiv.style.opacity = 0
-        setTimeout(() => {
-          this.loadDiv.remove()
-        }, 320)
+
+          this.loadDiv.style.opacity = 0
+          setTimeout(() => {
+            this.loadDiv.remove()
+          }, 550)
       })
     }
   }
@@ -121,22 +87,23 @@ export default class World {
   setSuzanne() {
     this.suzanne = new Suzanne({
       time: this.time,
-      models: this.models.src,
+      assets: this.assets.src,
     })
     this.container.add(this.suzanne.container)
   }
   setDune() {
     this.dunes = new Dune({
       time: this.time,
-      models: this.models.src,
+      models: this.assets.models,
     })
     this.container.add(this.dunes.container)
   }
   setCerceau() {
     this.cerceau = new Cerceau({
       debug: this.debugFolder,
-      models: this.models.src,
+      models: this.assets.models,
       time: this.time,
+      BLOOM_SCENE: this.BLOOM_SCENE
       listener: this.listener,
     })
     this.container.add(this.cerceau.container)

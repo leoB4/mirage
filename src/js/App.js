@@ -1,14 +1,21 @@
-import { Fog, PCFSoftShadowMap, Scene, WebGLRenderer, Clock, FogExp2, AudioListener } from 'three'
-import {EffectComposer, BloomEffect, EffectPass, RenderPass, GodRaysEffect} from 'postprocessing'
+import { Fog, PCFSoftShadowMap, Scene, WebGLRenderer, Clock, FogExp2, ShaderMaterial, Layers, MeshBasicMaterial, Vector2, AudioListener } from 'three'
+import { EffectComposer } from '../postprocessing/EffectComposer.js';
+import { RenderPass } from '../postprocessing/RenderPass.js';
+import { ShaderPass } from '../postprocessing/ShaderPass.js';
+import { UnrealBloomPass } from '../postprocessing/UnrealBloomPass.js';
+import vertexShader from '@shaders/vertexShader.vert'
+import fragmentShader from '@shaders/fragmentShader.frag'
+
 import * as dat from 'dat.gui'
 
 import Sizes from '@tools/Sizes.js'
 import Time from '@tools/Time.js'
-import Models from '@tools/ModelLoader.js'
-import Textures from '@tools/TextureLoader.js'
+import Loader from '@tools/Loader.js'
 
 import Camera from './Camera.js'
 import World from '@world/index.js'
+
+const ENTIRE_SCENE = 0, BLOOM_SCENE = 1;
 
 export default class App {
   constructor(options) {
@@ -18,33 +25,35 @@ export default class App {
     // Set up
     this.time = new Time()
     this.sizes = new Sizes()
-    this.models = new Models()
-    this.textures = new Textures()
+    this.assets = new Loader()
 
     this.setConfig()
     this.setRenderer()
     this.setCamera()
-    this.setComposer()
     this.setAudioListener()
-    this.setBloom()
     this.setWorld()
+    this.setBloom()
   }
   setRenderer() {
     // Set scene
     this.scene = new Scene()
     this.scene.fog = new FogExp2(0x998162,0.0062)
+
+    // Bloom layers
+    this.bloomLayer = new Layers();
+    this.bloomLayer.set( BLOOM_SCENE )
+
+    // Materials
+    this.darkMaterial = new MeshBasicMaterial( { color: "black", fog: false } );
+		this.materials = {}
+
     // Set renderer
     this.renderer = new WebGLRenderer({
       powerPreference: "high-performance",
       canvas: this.canvas,
-      alpha: true,
-      antialias: false,
-      stencil: false,
-      depth: true,
+      antialias: true,
     })
 
-    console.log(this.renderer);
-    
     // Set background color
     this.renderer.setClearColor(0x998162, 1)
     // Set renderer pixel ratio & sizes
@@ -58,12 +67,17 @@ export default class App {
       )
     })
     this.renderer.shadowMap.type = PCFSoftShadowMap
-    // Set RequestAnimationFrame with 60ips
-    console.log(this.composer);
-    this.time.on('tick', () => {
-      this.renderer.render(this.scene, this.camera.camera)
-      this.composer.render(this.time.delta) 
 
+    // Set RequestAnimationFrame with 60ips
+    this.time.on('tick', () => {
+      if (this.bloomComposer && this.finalComposer) {
+        this.renderer.setClearColor(0x000000, 1)
+        this.scene.traverse( this.darkenNonBloomed.bind(this) )
+        this.bloomComposer.render()
+        this.renderer.setClearColor(0x998162, 1)
+        this.scene.traverse( this.restoreMaterial.bind(this) )
+        this.finalComposer.render()
+      }
     })
   }
   setCamera() {
@@ -81,9 +95,10 @@ export default class App {
     this.world = new World({
       time: this.time,
       debug: this.debug,
-      models: this.models,
-      textures: this.textures,
-      listener: this.listener
+      assets: this.assets,
+      models: this.assets.models,
+      textures: this.assets.textures,
+      BLOOM_SCENE
     })
     // Add world to scene
     this.scene.add(this.world.container)
@@ -95,24 +110,50 @@ export default class App {
     }
   }
 
-  setComposer() {
-    this.composer = new EffectComposer(this.renderer)
-    this.composer.addPass(new RenderPass(this.scene, this.camera.camera))
-  }
-
   setBloom() {
-    this.bloomEffect = new BloomEffect({
-      intensity: 1,
-      luminanceThreshold: 0.8,
-      luminanceSmoothing: 0.1,
-    })
-    this.bloomEffect.blurPass.scale = 5
-    this.composer.addPass(new EffectPass(this.camera.camera, this.bloomEffect))
+    this.renderScene = new RenderPass( this.scene, this.camera.camera )
+    this.bloomComposer = new EffectComposer( this.renderer )
+		this.bloomComposer.renderToScreen = false
+
+    this.bloomPass = new UnrealBloomPass( new Vector2( window.innerWidth, window.innerHeight ), 1.5, 0.4, 0.85 )
+    this.bloomPass.threshold = 0
+    this.bloomPass.strength = 4
+    this.bloomPass.radius = 0.8
+    this.bloomPass.exposure = 1
+
+    this.bloomComposer.addPass( this.renderScene )
+    this.bloomComposer.addPass( this.bloomPass )
+
+    this.finalPass = new ShaderPass(
+      new ShaderMaterial( {
+        uniforms: {
+          baseTexture: { value: null },
+          bloomTexture: { value: this.bloomComposer.renderTarget2.texture }
+        },
+        vertexShader: vertexShader,
+        fragmentShader: fragmentShader,
+        defines: {}
+      } ), "baseTexture"
+    );
+    this.finalPass.needsSwap = true;
+
+    this.finalComposer = new EffectComposer( this.renderer )
+    this.finalComposer.addPass( this.renderScene )
+    this.finalComposer.addPass( this.finalPass )
   }
 
-  setGodRay() {
-    console.log(this.scene);
-    this.composer.addPass(new EffectPass(this.camera.camera, new GodRaysEffect(this.camera.camera, this.world.container.parent.children[1].children[1])))
+  darkenNonBloomed( obj ) {
+    if ( obj.isMesh && this.bloomLayer.test( obj.layers ) === false ) {
+      this.materials[ obj.uuid ] = obj.material;
+      obj.material = this.darkMaterial;
+    }
+  }
+
+  restoreMaterial( obj ) {
+    if ( this.materials[ obj.uuid ] ) {
+      obj.material = this.materials[ obj.uuid ];
+      delete this.materials[ obj.uuid ];
+    }
   }
   setAudioListener() {
     this.listener = new AudioListener();
