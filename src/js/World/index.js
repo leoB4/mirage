@@ -15,6 +15,7 @@ export default class World {
     this.debug = options.debug
     this.assets = options.assets
     this.BLOOM_SCENE = options.BLOOM_SCENE
+    this.listener = options.listener
 
     // Set up
     this.container = new Object3D()
@@ -32,6 +33,7 @@ export default class World {
     this.setCerceau()
     this.setDune()
     this.setSpotDune()
+    this.setWall()
   }
   setLoader() {
     this.loadDiv = document.querySelector('.loadScreen')
@@ -102,6 +104,7 @@ export default class World {
       models: this.assets.models,
       time: this.time,
       BLOOM_SCENE: this.BLOOM_SCENE
+      listener: this.listener,
     })
     this.container.add(this.cerceau.container)
   }

@@ -1,10 +1,11 @@
-import { Fog, PCFSoftShadowMap, Scene, WebGLRenderer, Clock, FogExp2, ShaderMaterial, Layers, MeshBasicMaterial, Vector2 } from 'three'
+import { Fog, PCFSoftShadowMap, Scene, WebGLRenderer, Clock, FogExp2, ShaderMaterial, Layers, MeshBasicMaterial, Vector2, AudioListener } from 'three'
 import { EffectComposer } from '../postprocessing/EffectComposer.js';
 import { RenderPass } from '../postprocessing/RenderPass.js';
 import { ShaderPass } from '../postprocessing/ShaderPass.js';
 import { UnrealBloomPass } from '../postprocessing/UnrealBloomPass.js';
 import vertexShader from '@shaders/vertexShader.vert'
 import fragmentShader from '@shaders/fragmentShader.frag'
+
 import * as dat from 'dat.gui'
 
 import Sizes from '@tools/Sizes.js'
@@ -29,6 +30,7 @@ export default class App {
     this.setConfig()
     this.setRenderer()
     this.setCamera()
+    this.setAudioListener()
     this.setWorld()
     this.setBloom()
   }
@@ -152,5 +154,9 @@ export default class App {
       obj.material = this.materials[ obj.uuid ];
       delete this.materials[ obj.uuid ];
     }
+  }
+  setAudioListener() {
+    this.listener = new AudioListener();
+    this.camera.camera.add( this.listener );
   }
 }
