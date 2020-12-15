@@ -12,6 +12,7 @@ export default class World {
     this.debug = options.debug
     this.assets = options.assets
     this.BLOOM_SCENE = options.BLOOM_SCENE
+    this.DECAL_SCENE = options.DECAL_SCENE
     this.listener = options.listener
 
     // Set up
@@ -26,7 +27,7 @@ export default class World {
   }
   init() {
     this.setAmbientLight()
-    // this.setHalo()
+    this.setHalo()
     this.setCity()
   }
   setLoader() {
@@ -63,7 +64,7 @@ export default class World {
       BLOOM_SCENE: this.BLOOM_SCENE,
       listener: this.listener
     })
-    // this.halo.container.position.set(500,0,0)
+    this.halo.container.position.set(this.DECAL_SCENE,0,0)
     this.container.add(this.halo.container)
   }
 

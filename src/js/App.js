@@ -18,6 +18,8 @@ import World from '@world/index.js'
 
 const ENTIRE_SCENE = 0, BLOOM_SCENE = 1;
 
+const DECAL_SCENE = -600
+
 const FOG_HALO = 0x998162
 const FOG_CITY = 0x111111
 const FOG_FOREST = 0x998162
@@ -27,8 +29,9 @@ const BG_CITY = 0x111111
 const BG_FOREST = 0x998162
 
 const CAM_CITY1 = new Vector3(0, 0, 0)
-
 const CAM_CITY2 = new Vector3(0,-80,0)
+
+const CAM_HALO = new Vector3(DECAL_SCENE,0,0)
 
 const CURVE_CITY = [
   [-2.0, 0.0, 0.0] ,
@@ -178,6 +181,7 @@ export default class App {
       models: this.assets.models,
       textures: this.assets.textures,
       BLOOM_SCENE,
+      DECAL_SCENE,
       listener: this.listener
     })
     // Add world to scene
@@ -241,15 +245,16 @@ export default class App {
   }
 
   cameraDisplacement() {
+    
 
     this.curves = []
 
-    CURVE_LIST.forEach(curve => {
+    CURVE_LIST.forEach((curve, index) => {
 
       const scale = 2;
 
       for (var i = 0; i < curve.length; i++) {
-        var x = curve[i][0] * scale;
+        var x = (curve[i][0] * scale) + DECAL_SCENE * index;
         var y = curve[i][1] * scale;
         var z = curve[i][2] * scale;
         curve[i] = new Vector3(x, z, -y);
@@ -280,11 +285,18 @@ export default class App {
     this.Campercentage += this.wheel.getDelta() * 0.00007 ;
     
     this.prevCam = this.Campercentage;
-    if(this.Campercentage < 0){
-      this.Campercentage = this.Campercentage + 1
+    if(this.Campercentage < 0 && this.curveNumber > 0 ){
+      this.Campercentage = 0
+      this.curveNumber -= 1
+    } else if (this.Campercentage < 0) {
+      this.Campercentage += 1
     }
-    if(this.Campercentage > 1){
-      this.Campercentage = this.Campercentage - 1
+
+    if(this.Campercentage > 1 && this.curveNumber < this.curves.length - 1){
+      this.Campercentage = 0
+      this.curveNumber += 1
+    } else if (this.Campercentage > 1) {
+      this.Campercentage -= 1
     }
     
     if(this.curveNumber === 0) {
@@ -295,6 +307,8 @@ export default class App {
       }else if((this.Campercentage < 0.35 || this.Campercentage > 0.795)){
         this.camTarget = CAM_CITY1
       }
+    }else if(this.curveNumber === 1){
+      this.camTarget = CAM_HALO
     }
 
     this.p1 = this.curves[this.curveNumber].getPointAt(this.Campercentage);

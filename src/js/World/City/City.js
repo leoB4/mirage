@@ -17,7 +17,7 @@ export default class City {
     this.container = new Object3D()
 
     if (this.debug) {
-      this.debugFolder = this.debug.addFolder('Halo')
+      this.debugFolder = this.debug.addFolder('city')
       this.debugFolder.open()
     }
     this.createCity()
