@@ -300,15 +300,19 @@ export default class App {
     }
     
     if(this.curveNumber === 0) {
+      // this.world.removeElement("halo")
+      this.world.container.children.find(child=>child.name === "halo").visible = false
+      this.world.container.children.find(child=>child.name === "city").visible = true
       if(this.Campercentage > 0.35 && this.Campercentage < 0.795) {
-        // console.log('salam');
-
         this.camTarget = CAM_CITY2
       }else if((this.Campercentage < 0.35 || this.Campercentage > 0.795)){
         this.camTarget = CAM_CITY1
       }
     }else if(this.curveNumber === 1){
       this.camTarget = CAM_HALO
+      this.world.container.children.find(child=>child.name === "halo").visible = true
+      this.world.container.children.find(child=>child.name === "city").visible = false
+      
     }
 
     this.p1 = this.curves[this.curveNumber].getPointAt(this.Campercentage);
@@ -319,4 +323,5 @@ export default class App {
     amount = amount > 1 ? 1 : amount;
     return value1 + (value2 - value1) * amount;
   }
+
 }

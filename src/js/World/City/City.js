@@ -15,11 +15,8 @@ export default class City {
 
     // Set up
     this.container = new Object3D()
+    this.container.name = "city"
 
-    if (this.debug) {
-      this.debugFolder = this.debug.addFolder('city')
-      this.debugFolder.open()
-    }
     this.createCity()
 
   }

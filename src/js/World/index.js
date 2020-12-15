@@ -65,6 +65,7 @@ export default class World {
       listener: this.listener
     })
     this.halo.container.position.set(this.DECAL_SCENE,0,0)
+    this.halo.container.visible = false
     this.container.add(this.halo.container)
   }
 

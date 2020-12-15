@@ -8,18 +8,15 @@ export default class Halo {
   constructor(options) {
     // Set options
     this.time = options.time
-    this.debug = options.debug
     this.assets = options.assets
     this.BLOOM_SCENE = options.BLOOM_SCENE
     this.listener = options.listener
 
     // Set up
     this.container = new Object3D()
+    this.container.name = "halo"
 
-    if (this.debug) {
-      this.debugFolder = this.debug.addFolder('Halo')
-      this.debugFolder.open()
-    }
+    
     this.createHalo()
 
   }
