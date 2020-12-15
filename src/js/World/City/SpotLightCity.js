@@ -8,6 +8,7 @@ export default class SpotLightCity {
     this.positionTarget = options.positionTarget
     this.intensity = options.intensity
     this.distanceSpot = options.distanceSpot
+    this.color = options.color
     this.angleSpot = options.angleSpot
 
     // Set up
@@ -26,7 +27,7 @@ export default class SpotLightCity {
     }
   }
   createSpotCity() {
-    this.light = new SpotLight(this.params.color, this.intensity, this.distanceSpot, this.angleSpot, 1, 2, 1)
+    this.light = new SpotLight(this.color, this.intensity, this.distanceSpot, this.angleSpot, 1, 2, 1)
     this.spotHelp = new SpotLightHelper(this.light)
 
     this.light.position.set(this.position.x, this.position.y, this.position.z)

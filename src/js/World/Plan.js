@@ -9,11 +9,11 @@ export default class Plan {
     this.createPlan()
   }
   createPlan() {
-    this.wall = new BoxBufferGeometry(30,30,5)
+    this.wall = new BoxBufferGeometry(300,1,300)
     this.wallMat = new MeshPhongMaterial(
         {
-            color: 0xaeaeae,
-            specular: 0xaeaeae,
+            color: 0xFFFFFF,
+            specular: 0xFFFFFF,
             shininess: 15,
             flatShading: false,
             side: DoubleSide
@@ -23,7 +23,7 @@ export default class Plan {
     this.meshWall.receiveShadow = true
     this.container.add(this.meshWall)
         
-    this.container.position.z = -30
+    this.container.position.y = -100
   }
   
 }

@@ -26,6 +26,10 @@ const BG_HALO = 0x998162
 const BG_CITY = 0x111111
 const BG_FOREST = 0x998162
 
+const CAM_CITY1 = new Vector3(0, 0, 0)
+
+const CAM_CITY2 = new Vector3(0,-80,0)
+
 const CURVE_CITY = [
   [-2.0, 0.0, 0.0] ,
   [1.0, 0.0, 0.0] ,
@@ -78,13 +82,16 @@ export default class App {
     this.assets = new Loader()
     this.wheel = new Scroll()
     this.curveNumber = 0
+    this.camLook = CAM_CITY1.clone()
+    this.camTarget = CAM_CITY1.clone()
+
 
     this.setConfig()
     this.cameraDisplacement()
     this.setRenderer()
     this.setTube()
     this.setCamera()
-    this.setAudioListener()
+    // this.setAudioListener()
     this.setWorld()
     this.setBloom()
   }
@@ -133,13 +140,14 @@ export default class App {
       this.wheel.on('wheelMove', ()=>{
         if(this.curves[this.curveNumber] !== undefined){
           this.MoveCamera()
-          
         }
       })
       
       this.vectCam.set(this.p1.x, this.p1.y , this.p1.z)
       this.camera.camera.position.lerp(this.vectCam, 0.1)
-      this.camera.camera.lookAt(0,0,0)
+      
+      this.camLook.lerp(this.camTarget, 0.05)
+      this.camera.camera.lookAt(this.camLook)
 
       if (this.bloomComposer && this.finalComposer) {
         this.renderer.setClearColor(0x000000, 1)
@@ -278,11 +286,21 @@ export default class App {
     if(this.Campercentage > 1){
       this.Campercentage = this.Campercentage - 1
     }
+    
+    if(this.curveNumber === 0) {
+      if(this.Campercentage > 0.35 && this.Campercentage < 0.795) {
+        // console.log('salam');
+
+        this.camTarget = CAM_CITY2
+      }else if((this.Campercentage < 0.35 || this.Campercentage > 0.795)){
+        this.camTarget = CAM_CITY1
+      }
+    }
 
     this.p1 = this.curves[this.curveNumber].getPointAt(this.Campercentage);
   }
 
-  lerp(value1, value2, amount) {
+  homeMadeLerp(value1, value2, amount) {
     amount = amount < 0 ? 0 : amount;
     amount = amount > 1 ? 1 : amount;
     return value1 + (value2 - value1) * amount;

@@ -29,16 +29,16 @@ export default class Cerceau {
   createCerceau() {
 
     // create the PositionalAudio object (passing in the listener)
-    this.sound = new PositionalAudio( this.listener );
+    // this.sound = new PositionalAudio( this.listener );
 
     // load a sound and set it as the PositionalAudio object's buffer
-    const audioLoader = new AudioLoader();
-    audioLoader.load( AmbianceSound, (buffer)=> {
-      this.sound.setBuffer( buffer );
-      this.sound.setRefDistance( 10 );
-      this.sound.setLoop(true)
-      this.sound.play();
-    });
+    // const audioLoader = new AudioLoader();
+    // audioLoader.load( AmbianceSound, (buffer)=> {
+    //   this.sound.setBuffer( buffer );
+    //   this.sound.setRefDistance( 10 );
+    //   this.sound.setLoop(true)
+    //   this.sound.play();
+    // });
 
 
     this.cerceau = this.models.cerceau.scene
@@ -48,7 +48,8 @@ export default class Cerceau {
       this.params.positionZ
       )
     this.cerceau.scale.set(50,50,50)
-    this.cerceau.add(this.sound)
+    // this.cerceau.add(this.sound)
+    
     const circleLum = new CylinderBufferGeometry(6.76,6.76,0.9,45,1,true)
     const materialS = new MeshPhongMaterial( { color: 0xdedede, shininess: 0, side: DoubleSide} )
     this.bloomCircle = new Mesh(circleLum, materialS)

@@ -24,6 +24,7 @@ export default class Camera {
       1000
     )
     this.setPosition()
+    this.camera.lookAt(0,0,0)
     this.container.add(this.camera)
     // Change camera aspect on resize
     this.sizes.on('resize', () => {

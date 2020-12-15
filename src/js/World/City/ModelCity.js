@@ -13,8 +13,11 @@ export default class ModelCity {
   }
   createCity() {
     this.city = this.models.city.scene
-    this.city.castShadow = false
-    this.city.receiveShadow = true
+    this.city.castShadow = true
+    this.city.children[0].children.forEach(element => {
+      element.castShadow = true
+    });
+    // this.city.receiveShadow = true
     this.city.scale.set(5.5,5.5,5.5)
     this.city.position.set(0,-35,-20)
 
