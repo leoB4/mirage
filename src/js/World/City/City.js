@@ -1,5 +1,5 @@
 import { Object3D } from 'three'
-
+import AmbientLightSource from '@world/AmbientLight'
 import ModelCity from './ModelCity.js'
 import SpotLightCity from './SpotLightCity'
 import MovingSpot from'./MovingSpot'
@@ -24,6 +24,7 @@ export default class City {
     this.setCity()
     this.setSpotLightCity()
     this.setMovingSpot()
+    this.setAmbientLight()
   }
   
   setCity() {
@@ -34,6 +35,14 @@ export default class City {
       listener: this.listener,
     })
     this.container.add(this.modelCity.container)
+  }
+
+  setAmbientLight() {
+    this.light = new AmbientLightSource({
+      debug: this.debugFolder,
+      color: 0x303030
+    })
+    this.container.add(this.light.container)
   }
 
   setSpotLightCity() {

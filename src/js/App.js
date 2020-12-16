@@ -1,4 +1,4 @@
-import { PCFSoftShadowMap, Scene, WebGLRenderer, FogExp2, ShaderMaterial, Layers, MeshBasicMaterial, Vector2, Vector3, CatmullRomCurve3, TubeGeometry, DoubleSide, Mesh, AudioListener } from 'three'
+import { PCFSoftShadowMap, Scene, WebGLRenderer, FogExp2, ShaderMaterial, Layers, MeshBasicMaterial, Vector2, Vector3, CatmullRomCurve3, TubeGeometry, DoubleSide, Mesh, AudioListener, Color } from 'three'
 import { EffectComposer } from '../postprocessing/EffectComposer.js';
 import { RenderPass } from '../postprocessing/RenderPass.js';
 import { ShaderPass } from '../postprocessing/ShaderPass.js';
@@ -18,15 +18,15 @@ import World from '@world/index.js'
 
 const ENTIRE_SCENE = 0, BLOOM_SCENE = 1;
 
-const DECAL_SCENE = -600
+const DECAL_SCENE = -500
 
-const FOG_HALO = 0x998162
-const FOG_CITY = 0x111111
-const FOG_FOREST = 0x998162
+const FOG_HALO = new FogExp2(0x998162,0.0062)
+const FOG_CITY = new FogExp2(0x111111,0.0062)
+const FOG_FOREST = new FogExp2(0x998162,0.0062)
 
-const BG_HALO = 0x998162
-const BG_CITY = 0x111111
-const BG_FOREST = 0x998162
+const BG_HALO = new Color(0x998162)
+const BG_CITY = new Color(0x111111)
+const BG_FOREST = new Color(0x998162)
 
 const CAM_FOREST = new Vector3(0,0,0)
 
@@ -104,6 +104,8 @@ export default class App {
     this.curveNumber = 0
     this.camLook = CAM_CITY1.clone()
     this.camTarget = CAM_CITY1.clone()
+    this.bgColor = BG_CITY.clone()
+    this.bgTarget = BG_CITY.clone()
 
 
     this.setConfig()
@@ -119,8 +121,7 @@ export default class App {
     // Set scene
     this.scene = new Scene()
 
-    
-    this.scene.fog = new FogExp2(FOG_CITY,0.0062)
+    this.scene.fog = FOG_CITY.clone()
 
     // Bloom layers
     this.bloomLayer = new Layers();
@@ -156,24 +157,25 @@ export default class App {
     this.vectCam = new Vector3(this.p1.x, this.p1.y , this.p1.z)
 
     this.time.on('tick', () => {
+      this.wheel.on('wheelMove', ()=>{
+        if(this.curves[this.curveNumber] !== undefined){
+          this.MoveCamera()
+        }
+      })
 
-      // this.wheel.on('wheelMove', ()=>{
-      //   if(this.curves[this.curveNumber] !== undefined){
-      //     this.MoveCamera()
-      //   }
-      // })
-      
-      // this.vectCam.set(this.p1.x, this.p1.y , this.p1.z)
-      // this.camera.camera.position.lerp(this.vectCam, 0.1)
-      
-      // this.camLook.lerp(this.camTarget, 0.05)
-      // this.camera.camera.lookAt(this.camLook)
+      this.vectCam.set(this.p1.x, this.p1.y , this.p1.z)
+      this.camera.camera.position.lerp(this.vectCam, 0.1)
 
+      this.camLook.lerp(this.camTarget, 0.05)
+      this.camera.camera.lookAt(this.camLook)
+      
       if (this.bloomComposer && this.finalComposer) {
+        this.bgColor.lerp(this.bgTarget, 0.05)
+
         this.renderer.setClearColor(0x000000, 1)
         this.scene.traverse( this.darkenNonBloomed.bind(this) )
         this.bloomComposer.render()
-        this.renderer.setClearColor(BG_CITY, 1)
+        this.renderer.setClearColor(this.bgColor, 1)
         this.scene.traverse( this.restoreMaterial.bind(this) )
         this.finalComposer.render()
       }
@@ -263,8 +265,6 @@ export default class App {
   }
 
   cameraDisplacement() {
-    
-
     this.curves = []
 
     CURVE_LIST.forEach((curve, index) => {
@@ -301,36 +301,78 @@ export default class App {
 
   MoveCamera() {
     this.Campercentage += this.wheel.getDelta() * 0.00007 ;
-    
-    this.prevCam = this.Campercentage;
+
+    const haloContainer = this.world.container.children.find(child=>child.name === "halo")
+    const cityContainer = this.world.container.children.find(child=>child.name === "city")
+
+    if(this.curveNumber === 0) {
+      if (this.Campercentage > 0.35 && this.Campercentage < 0.795 && this.camTarget !== CAM_CITY2) {
+        this.camTarget = CAM_CITY2
+      } else if ((this.Campercentage < 0.35 || this.Campercentage > 0.795) && this.camTarget !== CAM_CITY1){
+        this.camTarget = CAM_CITY1
+      }
+
+      if (this.Campercentage <= 0.995) {
+        if (haloContainer.visible === true) {
+          haloContainer.visible = false
+        }
+        if (this.scene.fog !== FOG_CITY) {
+          this.scene.fog = FOG_CITY
+        }
+        if (this.bgTarget !== BG_CITY) {
+          this.bgTarget = BG_CITY
+        }
+      } else if (this.Campercentage > 0.995) {
+        if (haloContainer.visible === false) {
+          haloContainer.visible = true
+        }
+        if (this.scene.fog !== FOG_HALO) {
+          this.scene.fog = FOG_HALO
+        }
+        if (this.bgTarget !== BG_HALO) {
+          this.bgTarget = BG_HALO
+        }
+      }
+    } else if(this.curveNumber === 1){
+      if (this.camTarget !== CAM_HALO)  {
+        this.camTarget = CAM_HALO
+      }
+
+      if (this.Campercentage > 0.005) {
+        if (cityContainer.visible === true) {
+          cityContainer.visible = false
+        }
+        if (this.scene.fog !== FOG_HALO) {
+          this.scene.fog = FOG_HALO
+        }
+        if (this.bgTarget !== BG_HALO) {
+          this.bgTarget = BG_HALO
+        }
+      } else if (this.Campercentage <= 0.005) {
+        if (cityContainer.visible === false) {
+          cityContainer.visible = true
+        }
+        if (this.scene.fog !== FOG_CITY) {
+          this.scene.fog = FOG_CITY
+        }
+        if (this.bgTarget !== BG_CITY) {
+          this.bgTarget = BG_CITY
+        }
+      }
+    }
+
     if(this.Campercentage < 0 && this.curveNumber > 0 ){
-      this.Campercentage = 0
+      this.Campercentage = 1
       this.curveNumber -= 1
     } else if (this.Campercentage < 0) {
-      this.Campercentage += 1
+      this.Campercentage = 0
     }
 
     if(this.Campercentage > 1 && this.curveNumber < this.curves.length - 1){
       this.Campercentage = 0
       this.curveNumber += 1
     } else if (this.Campercentage > 1) {
-      this.Campercentage -= 1
-    }
-    
-    if(this.curveNumber === 0) {
-      // this.world.removeElement("halo")
-      this.world.container.children.find(child=>child.name === "halo").visible = false
-      this.world.container.children.find(child=>child.name === "city").visible = true
-      if(this.Campercentage > 0.35 && this.Campercentage < 0.795) {
-        this.camTarget = CAM_CITY2
-      }else if((this.Campercentage < 0.35 || this.Campercentage > 0.795)){
-        this.camTarget = CAM_CITY1
-      }
-    }else if(this.curveNumber === 1){
-      this.camTarget = CAM_HALO
-      this.world.container.children.find(child=>child.name === "halo").visible = true
-      this.world.container.children.find(child=>child.name === "city").visible = false
-      
+      this.Campercentage = 1
     }
 
     this.p1 = this.curves[this.curveNumber].getPointAt(this.Campercentage);

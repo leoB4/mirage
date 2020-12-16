@@ -1,6 +1,4 @@
 import { Object3D } from 'three'
-
-import AmbientLightSource from './AmbientLight.js'
 import Plan from './Plan'
 import Halo from './Halo/Halo'
 import City from './City/City'
@@ -28,8 +26,8 @@ export default class World {
     this.setLoader()
   }
   init() {
-    this.setAmbientLight()
     this.setForest()
+    this.setHalo()
     this.setCity()
     this.setHalo()
   }
@@ -72,12 +70,6 @@ export default class World {
     this.container.add(this.halo.container)
   }
 
-  setAmbientLight() {
-    this.light = new AmbientLightSource({
-      debug: this.debugFolder,
-    })
-    this.container.add(this.light.container)
-  }
   setCity() {
     this.city = new City({
       time: this.time,
