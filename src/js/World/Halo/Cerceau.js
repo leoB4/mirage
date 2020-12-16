@@ -1,5 +1,7 @@
-import { Object3D,PointLight, Color, CylinderBufferGeometry, MeshBasicMaterial, MeshPhongMaterial, Mesh, DoubleSide, SphereBufferGeometry, PositionalAudio, AudioLoader } from 'three'
+import { Object3D,PointLight, Color, CylinderBufferGeometry, MeshBasicMaterial, MeshPhongMaterial, Mesh, DoubleSide, SphereBufferGeometry, PositionalAudio, AudioLoader, ShaderMaterial, BackSide } from 'three'
 import AmbianceSound from '@sounds/TEST1.mp3'
+import ledShaderVert from '@shaders/ledShader.vert'
+import haloShaderFrag from '@shaders/haloShader.frag'
 
 export default class Cerceau {
   constructor(options) {
@@ -22,7 +24,7 @@ export default class Cerceau {
     this.spendTime = 0
 
     this.createCerceau()
-    this.createLight()
+    // this.createLight()
     this.setMovement()
 
   }
@@ -49,10 +51,19 @@ export default class Cerceau {
       )
     this.cerceau.scale.set(50,50,50)
     // this.cerceau.add(this.sound)
-    
+
     const circleLum = new CylinderBufferGeometry(6.76,6.76,0.9,45,1,true)
-    const materialS = new MeshPhongMaterial( { color: 0xdedede, shininess: 0, side: DoubleSide} )
-    this.bloomCircle = new Mesh(circleLum, materialS)
+    // const materialS = new MeshPhongMaterial( { color: 0xdedede, shininess: 0, side: DoubleSide} )
+    const shaderMaterial = new ShaderMaterial( {
+      fragmentShader: haloShaderFrag,
+      vertexShader: ledShaderVert,
+      uniforms: {
+          time: { value: - Math.PI / 2 },
+      },
+      side: BackSide
+    } )
+
+    this.bloomCircle = new Mesh(circleLum, shaderMaterial)
     this.bloomCircle.position.set(
       this.params.positionX - 0.1,
       this.params.positionY,
@@ -84,9 +95,11 @@ export default class Cerceau {
     this.time.on('tick', () => {
       this.container.rotation.y += 0.005
 
-      this.lights.forEach((light, index) => {
-        this[light].color = new Color(`hsl(${(this.spendTime + (index * 360 / 25))%360}, 100%, 50%)`)
-      })
+      // this.lights.forEach((light, index) => {
+      //   this[light].color = new Color(`hsl(${(this.spendTime + (index * 360 / 25))%360}, 100%, 50%)`)
+      // })
+
+      this.bloomCircle.material.uniforms.time.value += 0.001
 
       this.spendTime += 1
     })
