@@ -1,5 +1,5 @@
 import { Object3D } from 'three'
-
+import AmbientLightSource from '@world/AmbientLight'
 import Cerceau from './Cerceau.js'
 import Dune from './Dune.js'
 import SpotDune from './SpotDune'
@@ -23,19 +23,17 @@ export default class Halo {
   createHalo() {
     this.setCerceau()
     this.setDune()
-    this.setSpotDune()
+    this.setAmbientLight()
   }
   
-  setSpotDune() {
-    this.spotDune = new SpotDune({
+  setAmbientLight() {
+    this.light = new AmbientLightSource({
       debug: this.debugFolder,
-      position: {x:150,y:50,z:100},
-      intensity: 1.5,
-      distanceSpot: 2000,
-      angleSpot: 0.50
+      color: 0x898989
     })
-    this.container.add(this.spotDune.container)
+    this.container.add(this.light.container)
   }
+
   setDune() {
     this.dunes = new Dune({
       time: this.time,
