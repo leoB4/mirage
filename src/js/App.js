@@ -18,7 +18,7 @@ import World from '@world/index.js'
 
 const ENTIRE_SCENE = 0, BLOOM_SCENE = 1;
 
-const DECAL_SCENE = -600
+const DECAL_SCENE = -800
 
 const FOG_HALO = new FogExp2(0x998162,0.0062)
 const FOG_CITY = new FogExp2(0x111111,0.0062)

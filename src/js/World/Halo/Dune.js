@@ -15,8 +15,8 @@ export default class Dune {
     this.dunes = this.models.dunes.scene
     this.dunes.castShadow = false
     this.dunes.receiveShadow = true
-    this.dunes.scale.set(5.5,5.5,5.5)
-    this.dunes.position.set(0,-35,-20)
+    this.dunes.scale.set(80,80,80)
+    this.dunes.position.set(0,-35,0)
 
     this.container.add(this.dunes)
   }
