@@ -26,6 +26,32 @@ canvas
     font-size 0.85em
     padding 10px
 
+  .js-buttonNavOpen
+    position relative
+    .frth
+      opacity: 0
+      transform: translateX(100%)
+
+    .frst
+      transform: rotate(45deg) translate(0,20px)
+      width: 150%
+      height: 2px
+
+    .thrd
+      transform: rotate(-45deg) translate(0,-20px)
+      width: 150%
+      height: 2px
+
+    .toCircle
+      background-color transparent
+      border: 1px solid #FFF
+      width: 70px
+      height: 70px
+      border-radius: 50%
+      top: 50% !important
+      left: 50% !important
+      transform: translate(-60%, -50%)
+
   .menu
     width: 30px
     height: 30px
@@ -34,18 +60,19 @@ canvas
     align-items: flex-start
     justify-content: space-between
     position relative
+    cursor: pointer
     span
       width: 5px
       height: 5px
       background-color #fff
       display: block
-      transition: .3s cubic-bezier(.165, .84, .44, 1)
+      transition: .5s cubic-bezier(.165, .84, .44, 1)
       position absolute
     
     .frst
       top: 0
       left: 0
-      transform-origin: center left
+      transform-origin: center 
 
     .scnd
       top: 0
@@ -54,25 +81,24 @@ canvas
     .thrd
       bottom: 0
       left: 0
-      transform-origin: center left
+      transform-origin: center 
 
     .frth
       bottom: 0
       right: 0
     
     &:hover
-      span
-        width: 150%
-        height: 2px
-
-      .beHidden
+      .scnd, .frth
         opacity: 0
 
       .frst
-        transform: rotate(45deg)
+        width: 150%
+        height: 2px
 
       .thrd
-        transform: rotate(-45deg) translate(-1.5px,5px)
+        width: 150%
+        height: 2px
+
 
 .content
   position: absolute
@@ -82,6 +108,7 @@ canvas
   width: 300px
   left: 17%
   top: 30%
+  transition: .5s cubic-bezier(.165, .84, .44, 1)
 
   .title
     color: #ffffff
@@ -108,7 +135,7 @@ canvas
     letter-spacing: 1px
     line-height: 18px
 
-.forest
+.js-forest
   opacity: 0
 
   .title
@@ -116,7 +143,7 @@ canvas
       bottom: 20%
       right: -30%
 
-.city
+.js-city
   opacity: 0
 
   .title
@@ -124,7 +151,7 @@ canvas
       bottom: 15%
       left: 55%
 
-.halo
+.js-halo
   opacity: 0
 
   .title
@@ -138,6 +165,8 @@ canvas
   background-color #000
   position: absolute
   z-index 100
+  transform: translateY(100%)
+  transition: .5s cubic-bezier(.165, .84, .44, 1)
 
   button
     background-color transparent
@@ -156,8 +185,13 @@ canvas
       position: absolute
       bottom: -2%
       left: 0
-      z-index -1
+      transform-origin: left center
+      transform: scaleX(0)
+      transition: .5s cubic-bezier(.165, .84, .44, 1)
     
+    &:hover
+      span
+        transform: scaleX(1)
 
   .nav-content
     position: absolute
@@ -179,11 +213,11 @@ canvas
 
         span
           display block
-      
-      
-
   
   .button-credits
     position: absolute
     bottom: 3%
     right: 3% 
+
+.js-openNav
+  transform: translateY(0%)

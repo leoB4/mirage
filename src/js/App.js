@@ -107,6 +107,14 @@ export default class App {
     this.bgColor = BG_FOREST.clone()
     this.bgTarget = BG_FOREST.clone()
 
+    // Document query Selector for UI
+    this.jsMenu = options.jsMenu
+    this.body = options.body
+    this.navigation = options.navigation
+    this.jsForest = options.jsForest
+    this.jsCity = options.jsCity
+    this.jsHalo = options.jsHalo
+    
 
     this.setConfig()
     this.cameraDisplacement()
@@ -116,6 +124,7 @@ export default class App {
     // this.setAudioListener()
     this.setWorld()
     this.setBloom()
+    this.showNav()
   }
   setRenderer() {
     // Set scene
@@ -310,6 +319,26 @@ export default class App {
       if (this.camTarget !== CAM_FOREST)  {
         this.camTarget = CAM_FOREST
       }
+
+      // If for showing info
+      if(this.Campercentage >0.05 && this.Campercentage < 0.2){
+        this.jsForest.style.opacity = 1
+        this.jsForest.classList.add('showed')
+      }
+      if(this.Campercentage > 0.2 && this.jsForest.classList.contains('showed') ){
+          this.jsForest.style.opacity = 0
+          this.jsForest.classList.remove('showed')
+      }
+      if(this.Campercentage < 0.2 && this.Campercentage > 0.05 && !this.jsForest.classList.contains('showed')){
+        this.jsForest.style.opacity = 1
+        this.jsForest.classList.add('showed')
+      }
+      if(this.Campercentage < 0.05 && this.jsForest.classList.contains('showed')){
+        this.jsForest.style.opacity = 0
+        this.jsForest.classList.remove('showed')
+      }
+
+      // If for moving curveCam
       if (this.Campercentage <= 0.995) {
         if (cityContainer.visible === true) {
           cityContainer.visible = false
@@ -338,6 +367,27 @@ export default class App {
         this.camTarget = CAM_CITY1
       }
 
+      // If form showing info
+      if(this.Campercentage >0.05 && this.Campercentage < 0.2){
+        this.jsCity.style.opacity = 1
+        this.jsCity.classList.add('showed')
+      }
+      if(this.Campercentage > 0.2 && this.jsCity.classList.contains('showed') ){
+          this.jsCity.style.opacity = 0
+          this.jsCity.classList.remove('showed')
+      }
+      if(this.Campercentage < 0.2 && this.Campercentage > 0.05 && !this.jsCity.classList.contains('showed')){
+        this.jsCity.style.opacity = 1
+        this.jsCity.classList.add('showed')
+      }
+      if(this.Campercentage < 0.05 && this.jsCity.classList.contains('showed')){
+        this.jsCity.style.opacity = 0
+        this.jsCity.classList.remove('showed')
+      }
+
+
+
+      // If for moving Curve cam
       if (this.Campercentage > 0.005) {
         if (forestContainer.visible === true) {
           forestContainer.visible = false
@@ -385,6 +435,26 @@ export default class App {
         this.camTarget = CAM_HALO
       }
 
+      // If for showing info
+      if(this.Campercentage >0.05 && this.Campercentage < 0.2){
+        this.jsHalo.style.opacity = 1
+        this.jsHalo.classList.add('showed')
+      }
+      if(this.Campercentage > 0.2 && this.jsHalo.classList.contains('showed') ){
+          this.jsHalo.style.opacity = 0
+          this.jsHalo.classList.remove('showed')
+      }
+      if(this.Campercentage < 0.2 && this.Campercentage > 0.05 && !this.jsHalo.classList.contains('showed')){
+        this.jsHalo.style.opacity = 1
+        this.jsHalo.classList.add('showed')
+      }
+      if(this.Campercentage < 0.05 && this.jsHalo.classList.contains('showed')){
+        this.jsHalo.style.opacity = 0
+        this.jsHalo.classList.remove('showed')
+      }
+
+
+      // If for moving Curve cam
       if (this.Campercentage > 0.005) {
         if (cityContainer.visible === true) {
           cityContainer.visible = false
@@ -429,6 +499,14 @@ export default class App {
     amount = amount < 0 ? 0 : amount;
     amount = amount > 1 ? 1 : amount;
     return value1 + (value2 - value1) * amount;
+  }
+
+  showNav() {
+    this.jsMenu.addEventListener('click', ()=>{
+      this.body.classList.toggle('navOpen')
+      this.navigation.classList.toggle('js-openNav')
+      this.jsMenu.classList.toggle('js-buttonNavOpen')
+    })
   }
 
 }
