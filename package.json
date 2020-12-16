@@ -4,6 +4,7 @@
   "description": "Three template",
   "main": "index.js",
   "dependencies": {
+    "glsl-noise": "0.0.0",
     "postprocessing": "^6.18.0"
   },
   "devDependencies": {
