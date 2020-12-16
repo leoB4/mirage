@@ -29,7 +29,6 @@ export default class World {
     this.setForest()
     this.setHalo()
     this.setCity()
-    this.setHalo()
   }
   setLoader() {
     this.loadDiv = document.querySelector('.loadScreen')

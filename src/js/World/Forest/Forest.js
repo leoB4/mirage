@@ -1,6 +1,7 @@
 import {
     Object3D
 } from 'three'
+import AmbientLightSource from '@world/AmbientLight'
 
 import ModelForest from './ModelForest'
 import Altar from './Altar'
@@ -19,7 +20,7 @@ export default class Forest {
 
         // Set up
         this.container = new Object3D()
-        this.container.name = "city"
+        this.container.name = "forest"
 
         this.createForest()
 
@@ -27,8 +28,15 @@ export default class Forest {
     createForest() {
         this.setModelForest()
         this.setDisc()
-        // this.setSpotLightForest()
+        this.setAmbientLight()
     }
+    setAmbientLight() {
+        this.light = new AmbientLightSource({
+          debug: this.debugFolder,
+          color: 0x303030
+        })
+        this.container.add(this.light.container)
+      }
 
     setModelForest() {
         this.modelForest = new ModelForest({
@@ -38,6 +46,7 @@ export default class Forest {
             listener: this.listener,
         })
         this.container.add(this.modelForest.container)
+        this.container.position.set(0,-20,0)
     }
 
     setAltar() {

@@ -16,7 +16,7 @@ export default class ModelForest {
     this.forest.castShadow = false
     this.forest.receiveShadow = true
     // this.forest.scale.set(5.5,5.5,5.5)
-    this.forest.position.set(0,-35,0)
+    this.forest.position.set(0,-1.7,0)
 
     this.container.add(this.forest)
   }

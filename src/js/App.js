@@ -22,13 +22,13 @@ const DECAL_SCENE = -500
 
 const FOG_HALO = new FogExp2(0x998162,0.0062)
 const FOG_CITY = new FogExp2(0x111111,0.0062)
-const FOG_FOREST = new FogExp2(0x998162,0.0062)
+const FOG_FOREST = new FogExp2(0x111111,0.0062)
 
 const BG_HALO = new Color(0x998162)
 const BG_CITY = new Color(0x111111)
-const BG_FOREST = new Color(0x998162)
+const BG_FOREST = new Color(0x111111)
 
-const CAM_FOREST = new Vector3(0,0,0)
+const CAM_FOREST = new Vector3(0,-20,0)
 
 const CAM_CITY1 = new Vector3(DECAL_SCENE, 0, 0)
 const CAM_CITY2 = new Vector3(DECAL_SCENE,-80,0)
@@ -102,10 +102,10 @@ export default class App {
     this.assets = new Loader()
     this.wheel = new Scroll()
     this.curveNumber = 0
-    this.camLook = CAM_CITY1.clone()
-    this.camTarget = CAM_CITY1.clone()
-    this.bgColor = BG_CITY.clone()
-    this.bgTarget = BG_CITY.clone()
+    this.camLook = CAM_FOREST.clone()
+    this.camTarget = CAM_FOREST.clone()
+    this.bgColor = BG_FOREST.clone()
+    this.bgTarget = BG_FOREST.clone()
 
 
     this.setConfig()
@@ -121,7 +121,7 @@ export default class App {
     // Set scene
     this.scene = new Scene()
 
-    this.scene.fog = FOG_CITY.clone()
+    this.scene.fog = FOG_FOREST.clone()
 
     // Bloom layers
     this.bloomLayer = new Layers();
@@ -139,7 +139,7 @@ export default class App {
     })
 
     // Set background color
-    this.renderer.setClearColor(BG_CITY, 1)
+    this.renderer.setClearColor(BG_FOREST, 1)
     // Set renderer pixel ratio & sizes
     this.renderer.setPixelRatio(window.devicePixelRatio)
     this.renderer.setSize(this.sizes.viewport.width, this.sizes.viewport.height)
@@ -302,16 +302,63 @@ export default class App {
   MoveCamera() {
     this.Campercentage += this.wheel.getDelta() * 0.00007 ;
 
+    const forestContainer = this.world.container.children.find(child=>child.name === "forest")
     const haloContainer = this.world.container.children.find(child=>child.name === "halo")
     const cityContainer = this.world.container.children.find(child=>child.name === "city")
 
-    if(this.curveNumber === 0) {
+    if(this.curveNumber === 0){
+      if (this.camTarget !== CAM_FOREST)  {
+        this.camTarget = CAM_FOREST
+      }
+      if (this.Campercentage <= 0.995) {
+        if (cityContainer.visible === true) {
+          cityContainer.visible = false
+        }
+        if (this.scene.fog !== FOG_FOREST) {
+          this.scene.fog = FOG_FOREST
+        }
+        if (this.bgTarget !== BG_FOREST) {
+          this.bgTarget = BG_FOREST
+        }
+      } else if (this.Campercentage > 0.995) {
+        if (cityContainer.visible === false) {
+          cityContainer.visible = true
+        }
+        if (this.scene.fog !== FOG_CITY) {
+          this.scene.fog = FOG_CITY
+        }
+        if (this.bgTarget !== BG_CITY) {
+          this.bgTarget = BG_CITY
+        }
+      }
+    } else if(this.curveNumber === 1) {
       if (this.Campercentage > 0.35 && this.Campercentage < 0.795 && this.camTarget !== CAM_CITY2) {
         this.camTarget = CAM_CITY2
       } else if ((this.Campercentage < 0.35 || this.Campercentage > 0.795) && this.camTarget !== CAM_CITY1){
         this.camTarget = CAM_CITY1
       }
 
+      if (this.Campercentage > 0.005) {
+        if (forestContainer.visible === true) {
+          forestContainer.visible = false
+        }
+        if (this.scene.fog !== FOG_CITY) {
+          this.scene.fog = FOG_CITY
+        }
+        if (this.bgTarget !== BG_CITY) {
+          this.bgTarget = BG_CITY
+        }
+      } else if (this.Campercentage <= 0.005) {
+        if (forestContainer.visible === false) {
+          forestContainer.visible = true
+        }
+        if (this.scene.fog !== FOG_FOREST) {
+          this.scene.fog = FOG_FOREST
+        }
+        if (this.bgTarget !== BG_FOREST) {
+          this.bgTarget = BG_FOREST
+        }
+      } 
       if (this.Campercentage <= 0.995) {
         if (haloContainer.visible === true) {
           haloContainer.visible = false
@@ -333,7 +380,7 @@ export default class App {
           this.bgTarget = BG_HALO
         }
       }
-    } else if(this.curveNumber === 1){
+    } else if(this.curveNumber === 2){
       if (this.camTarget !== CAM_HALO)  {
         this.camTarget = CAM_HALO
       }

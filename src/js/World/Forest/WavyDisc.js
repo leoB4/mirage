@@ -90,7 +90,7 @@ export default class WavyDisc {
 
         this.water.rotation.x = -Math.PI / 2
         this.container.add(this.water)
-        this.container.position.set(2, -33.3, 0)
+        this.container.position.set(2, 0, 0)
     }
 
     createAltars() {
