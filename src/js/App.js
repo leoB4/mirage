@@ -28,10 +28,27 @@ const BG_HALO = new Color(0x998162)
 const BG_CITY = new Color(0x111111)
 const BG_FOREST = new Color(0x998162)
 
-const CAM_CITY1 = new Vector3(0, 0, 0)
-const CAM_CITY2 = new Vector3(0,-80,0)
+const CAM_FOREST = new Vector3(0,0,0)
 
-const CAM_HALO = new Vector3(DECAL_SCENE,0,0)
+const CAM_CITY1 = new Vector3(DECAL_SCENE, 0, 0)
+const CAM_CITY2 = new Vector3(DECAL_SCENE,-80,0)
+
+const CAM_HALO = new Vector3(DECAL_SCENE*2,0,0)
+
+
+
+const CURVE_FOREST = [
+  [-16.397377014160156, -37.26016616821289, -0.4423207938671112] ,
+  [-21.780925750732422, -27.99492073059082, -0.11969171464443207] ,
+  [-21.780925750732422, -15.335081100463867, -0.19549913704395294] ,
+  [-21.780925750732422, -6.162383556365967, -0.043884292244911194] ,
+  [-18.663127899169922, 18.35989761352539, 0.0] ,
+  [-1.5774521827697754, 22.52930450439453, 0.0] ,
+  [25.932178497314453, 22.8330020904541, 16.541690826416016] ,
+  [24.590198516845703, -2.8000054359436035, 34.02119064331055] ,
+  [26.311216354370117, -25.607934951782227, 13.661008834838867] ,
+  [21.684602737426758, -35.49163818359375, 6.925106048583984] ,
+]
 
 const CURVE_CITY = [
   [-2.0, 0.0, 0.0] ,
@@ -72,7 +89,7 @@ const CURVE_HALO = [
   [21.684602737426758, -35.49163818359375, 6.925106048583984] ,
 ]
 
-const CURVE_LIST = [CURVE_CITY, CURVE_HALO]
+const CURVE_LIST = [CURVE_FOREST, CURVE_CITY, CURVE_HALO]
 
 export default class App {
   constructor(options) {
@@ -140,7 +157,6 @@ export default class App {
     this.vectCam = new Vector3(this.p1.x, this.p1.y , this.p1.z)
 
     this.time.on('tick', () => {
-
       this.wheel.on('wheelMove', ()=>{
         if(this.curves[this.curveNumber] !== undefined){
           this.MoveCamera()
@@ -152,7 +168,7 @@ export default class App {
 
       this.camLook.lerp(this.camTarget, 0.05)
       this.camera.camera.lookAt(this.camLook)
-
+      
       if (this.bloomComposer && this.finalComposer) {
         this.bgColor.lerp(this.bgTarget, 0.05)
 
@@ -185,6 +201,7 @@ export default class App {
       textures: this.assets.textures,
       BLOOM_SCENE,
       DECAL_SCENE,
+      scene: this.scene,
       listener: this.listener
     })
     // Add world to scene

@@ -2,6 +2,7 @@ import { Object3D } from 'three'
 import Plan from './Plan'
 import Halo from './Halo/Halo'
 import City from './City/City'
+import Forest from './Forest/Forest.js'
 
 export default class World {
   constructor(options) {
@@ -12,6 +13,7 @@ export default class World {
     this.BLOOM_SCENE = options.BLOOM_SCENE
     this.DECAL_SCENE = options.DECAL_SCENE
     this.listener = options.listener
+    this.scene = options.scene
 
     // Set up
     this.container = new Object3D()
@@ -24,8 +26,10 @@ export default class World {
     this.setLoader()
   }
   init() {
+    this.setForest()
     this.setHalo()
     this.setCity()
+    this.setHalo()
   }
   setLoader() {
     this.loadDiv = document.querySelector('.loadScreen')
@@ -61,7 +65,7 @@ export default class World {
       BLOOM_SCENE: this.BLOOM_SCENE,
       listener: this.listener
     })
-    this.halo.container.position.set(this.DECAL_SCENE,0,0)
+    this.halo.container.position.set(this.DECAL_SCENE*2,0,0)
     this.halo.container.visible = false
     this.container.add(this.halo.container)
   }
@@ -73,7 +77,21 @@ export default class World {
       assets: this.assets,
       listener: this.listener
     })
+    this.city.container.position.set(this.DECAL_SCENE,0,0)
+    this.city.container.visible = false
     this.container.add(this.city.container)
+  }
+
+  setForest() {
+    this.forest = new Forest({
+      time: this.time,
+      debug: this.debug,
+      assets: this.assets,
+      listener: this.listener,
+      BLOOM_SCENE: this.BLOOM_SCENE,
+      scene: this.scene
+    })
+    this.container.add(this.forest.container)
   }
   setWall() {
     this.wall = new Plan()
