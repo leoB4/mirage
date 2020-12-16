@@ -49,7 +49,7 @@ export default class WavyDisc {
 
         this.createDisc()
         this.createAltars()
-        // this.setMovement()
+        this.setMovement()
 
     }
     createDisc() {
@@ -76,9 +76,7 @@ export default class WavyDisc {
                 textureWidth: 512,
                 textureHeight: 512,
                 waterNormals: new TextureLoader().load( waterNorm, function ( texture ) {
-
                     texture.wrapS = texture.wrapT = RepeatWrapping;
-
                 } ),
                 alpha: 1.0,
                 sunDirection: new Vector3(),
@@ -114,13 +112,15 @@ export default class WavyDisc {
 
     setMovement() {
         this.time.on('tick', () => {
-            this.container.rotation.y += 0.005
+            // this.container.rotation.y += 0.005
 
-            this.lights.forEach((light, index) => {
-                this[light].color = new Color(`hsl(${(this.spendTime + (index * 360 / 25))%360}, 100%, 50%)`)
-            })
+            // this.lights.forEach((light, index) => {
+            //     this[light].color = new Color(`hsl(${(this.spendTime + (index * 360 / 25))%360}, 100%, 50%)`)
+            // })
 
-            this.spendTime += 1
+            // this.spendTime += 1
+
+            this.water.material.uniforms[ 'time' ].value += 0.001
         })
     }
 
