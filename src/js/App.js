@@ -22,7 +22,7 @@ const DECAL_SCENE = -500
 
 const FOG_HALO = new FogExp2(0x998162,0.0062)
 const FOG_CITY = new FogExp2(0x111111,0.0062)
-const FOG_FOREST = new FogExp2(0x111111,0.0062)
+const FOG_FOREST = new FogExp2(0x111111,0.009)
 
 const BG_HALO = new Color(0x998162)
 const BG_CITY = new Color(0x111111)
@@ -165,9 +165,9 @@ export default class App {
 
       this.vectCam.set(this.p1.x, this.p1.y , this.p1.z)
       this.camera.camera.position.lerp(this.vectCam, 0.1)
-
       this.camLook.lerp(this.camTarget, 0.05)
       this.camera.camera.lookAt(this.camLook)
+      // this.camera.camera.rotation.y = Math.PI/10
       
       if (this.bloomComposer && this.finalComposer) {
         this.bgColor.lerp(this.bgTarget, 0.05)

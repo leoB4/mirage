@@ -29,11 +29,12 @@ export default class Forest {
         this.setModelForest()
         this.setDisc()
         this.setAmbientLight()
+        this.setSpotLightForest()
     }
     setAmbientLight() {
         this.light = new AmbientLightSource({
           debug: this.debugFolder,
-          color: 0x303030
+          color: 0xaeaeae
         })
         this.container.add(this.light.container)
       }
@@ -79,10 +80,10 @@ export default class Forest {
                 y: 1000,
                 z: 0
             },
-            intensity: 1,
+            intensity: 0.3,
             color: 0xFFFFFF,
             distancePoint: 1000,
-            angleSpot: 1,
+            angleSpot: 0.5,
             positionTarget: {
                 x: 0,
                 y: 0,

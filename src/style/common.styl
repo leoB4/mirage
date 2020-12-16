@@ -7,3 +7,183 @@ canvas
   width 100%
   height 100%
   outline none
+
+.header
+  width: 95%
+  display: flex
+  flex-flow: row nowrap
+  justify-content: space-between
+  align-items: center
+  position: absolute
+  top: 2%
+  left: 50%
+  transform: translate(-50%, 0)
+  z-index 200
+
+  .header-info
+    font-family Lausanne
+    color: #FFF
+    font-size 0.85em
+    padding 10px
+
+  .menu
+    width: 30px
+    height: 30px
+    display flex
+    flex-flow: row wrap
+    align-items: flex-start
+    justify-content: space-between
+    position relative
+    span
+      width: 5px
+      height: 5px
+      background-color #fff
+      display: block
+      transition: .3s cubic-bezier(.165, .84, .44, 1)
+      position absolute
+    
+    .frst
+      top: 0
+      left: 0
+      transform-origin: center left
+
+    .scnd
+      top: 0
+      right: 0
+
+    .thrd
+      bottom: 0
+      left: 0
+      transform-origin: center left
+
+    .frth
+      bottom: 0
+      right: 0
+    
+    &:hover
+      span
+        width: 150%
+        height: 2px
+
+      .beHidden
+        opacity: 0
+
+      .frst
+        transform: rotate(45deg)
+
+      .thrd
+        transform: rotate(-45deg) translate(-1.5px,5px)
+
+.content
+  position: absolute
+  display flex
+  flex-flow column nowrap
+  align-items: flex-start
+  width: 300px
+  left: 17%
+  top: 30%
+
+  .title
+    color: #ffffff
+    position relative
+    font-size: 5em
+    font-family Lausanne
+    font-weight: 400
+
+    span
+      display: block
+      margin: 5px 0
+    
+    .creator
+      position: absolute
+      font-size 0.85rem
+
+      span
+        display: block
+
+  .description
+    color: #ffffff
+    font-size 0.85em
+    font-family Lausanne
+    letter-spacing: 1px
+    line-height: 18px
+
+.forest
+  opacity: 0
+
+  .title
+    .creator
+      bottom: 20%
+      right: -30%
+
+.city
+  opacity: 0
+
+  .title
+    .creator
+      bottom: 15%
+      left: 55%
+
+.halo
+  opacity: 0
+
+  .title
+    .creator
+      bottom: 15%
+      left: 55%
+
+.nav
+  width: 100%
+  height: 100%
+  background-color #000
+  position: absolute
+  z-index 100
+
+  button
+    background-color transparent
+    cursor: pointer
+    border: none
+    color: #FFF
+    font-family Lausanne
+    font-size 0.85em
+    padding: 5px
+    position relative
+
+    span
+      width:  100%
+      height: 2px
+      background-color #fff
+      position: absolute
+      bottom: -2%
+      left: 0
+      z-index -1
+    
+
+  .nav-content
+    position: absolute
+    top: 50%
+    left: 50%
+    width: 90%
+    display: flex
+    flex-flow row nowrap
+    align-items: center
+    justify-content: space-around
+    transform translate(-50%,-50%)
+
+    .item-text
+      color: #FFF
+      font-family Lausanne
+
+      p
+        font-size 5em
+
+        span
+          display block
+      
+      
+
+  
+  .button-credits
+    position: absolute
+    bottom: 3%
+    right: 3% 
