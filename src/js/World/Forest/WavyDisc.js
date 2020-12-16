@@ -81,7 +81,7 @@ export default class WavyDisc {
                 alpha: 1.0,
                 sunDirection: new Vector3(),
                 sunColor: 0xffffff,
-                waterColor: 0x001e0f,
+                waterColor: 0x08192b,
                 distortionScale: 3.7,
                 fog: this.scene.fog !== undefined
             }
