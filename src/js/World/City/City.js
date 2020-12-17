@@ -3,22 +3,17 @@ import AmbientLightSource from '@world/AmbientLight'
 import ModelCity from './ModelCity.js'
 import SpotLightCity from './SpotLightCity'
 import MovingSpot from'./MovingSpot'
-import Plan from '../Plan'
 
 export default class City {
   constructor(options) {
-    // Set options
     this.time = options.time
-    this.debug = options.debug
     this.assets = options.assets
     this.listener = options.listener
 
-    // Set up
     this.container = new Object3D()
     this.container.name = "city"
 
     this.createCity()
-
   }
   createCity() {
     this.setCity()
@@ -26,10 +21,9 @@ export default class City {
     this.setMovingSpot()
     this.setAmbientLight()
   }
-  
+
   setCity() {
     this.modelCity = new ModelCity({
-      debug: this.debugFolder,
       models: this.assets.models,
       time: this.time,
       listener: this.listener,
@@ -39,31 +33,12 @@ export default class City {
 
   setAmbientLight() {
     this.light = new AmbientLightSource({
-      debug: this.debugFolder,
       color: 0xc2c2c2
     })
     this.container.add(this.light.container)
   }
 
   setSpotLightCity() {
-    this.spot1 = new SpotLightCity({
-      position: {x:-50,y:50,z:-100},
-      intensity: 1.5,
-      color: 0xFFFFFF,
-      distancePoint: 90,
-      angleSpot: 0.25,
-      positionTarget: {x:80,y:-10,z:-80}
-    })
-
-    this.spot2 = new SpotLightCity({
-      position: {x:0,y:50,z:0},
-      intensity: 1.5,
-      color: 0xFFFFFF,
-      distancePoint: 200,
-      angleSpot: 0.5,
-      positionTarget: {x:-80,y:-10,z:20},
-    })
-
     this.spotDebris = new SpotLightCity({
       position: {x:10,y:-10,z:-10},
       color: 0xFFFFFF,
@@ -120,11 +95,6 @@ export default class City {
     })
 
     this.container.add(this.moving1.container, this.moving2.container, this.moving3.container)
-    
-  }
 
-  setFloor() {
-    this.floor = new Plan()
-    this.container.add(this.floor.container)
   }
 }

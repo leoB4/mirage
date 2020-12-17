@@ -9,28 +9,23 @@ import {
   Vector2,
   Vector3,
   CatmullRomCurve3,
-  TubeGeometry,
-  DoubleSide,
   Mesh,
-  AudioListener,
   Color
 } from 'three'
 import {
   EffectComposer
-} from '../postprocessing/EffectComposer.js';
+} from '../postprocessing/EffectComposer.js'
 import {
   RenderPass
-} from '../postprocessing/RenderPass.js';
+} from '../postprocessing/RenderPass.js'
 import {
   ShaderPass
-} from '../postprocessing/ShaderPass.js';
+} from '../postprocessing/ShaderPass.js'
 import {
   UnrealBloomPass
-} from '../postprocessing/UnrealBloomPass.js';
+} from '../postprocessing/UnrealBloomPass.js'
 import vertexShader from '@shaders/vertexShader.vert'
 import fragmentShader from '@shaders/fragmentShader.frag'
-
-import * as dat from 'dat.gui'
 
 import Sizes from '@tools/Sizes.js'
 import Time from '@tools/Time.js'
@@ -41,9 +36,12 @@ import Camera from './Camera.js'
 import World from '@world/index.js'
 
 const ENTIRE_SCENE = 0,
-  BLOOM_SCENE = 1;
+  BLOOM_SCENE = 1
 
 const DECAL_SCENE = -800
+
+const END_SCENE = 0.995
+const START_SCENE = 0.005
 
 const FOG_HALO = new FogExp2(0xbaa984, 0.0062)
 const FOG_CITY = new FogExp2(0x111111, 0.0062)
@@ -59,8 +57,6 @@ const CAM_CITY1 = new Vector3(DECAL_SCENE, 0, 0)
 const CAM_CITY2 = new Vector3(DECAL_SCENE, -80, 0)
 
 const CAM_HALO = new Vector3(DECAL_SCENE * 2, 0, 0)
-
-
 
 const CURVE_FOREST = [
   [13.030901908874512, 75.37338256835938, -14.02478313446045] ,
@@ -148,12 +144,10 @@ export default class App {
     this.jsForest = options.jsForest
     this.jsCity = options.jsCity
     this.jsHalo = options.jsHalo
-
     this.expoButton = options.expoButton
-
     this.jsLaunch = options.jsLaunch
 
-    this.setConfig()
+    // Init
     this.cameraDisplacement()
     this.setRenderer()
     this.setCamera()
@@ -162,21 +156,21 @@ export default class App {
     this.showNav()
     this.changeCurve()
   }
+
   setRenderer() {
     // Set scene
     this.scene = new Scene()
-
     this.scene.fog = FOG_FOREST.clone()
 
     // Bloom layers
-    this.bloomLayer = new Layers();
+    this.bloomLayer = new Layers()
     this.bloomLayer.set(BLOOM_SCENE)
 
     // Materials
     this.darkMaterial = new MeshBasicMaterial({
       color: "black",
       fog: false
-    });
+    })
     this.materials = {}
 
     // Set renderer
@@ -185,13 +179,9 @@ export default class App {
       canvas: this.canvas,
       antialias: true,
     })
-
-    // Set background color
     this.renderer.setClearColor(BG_FOREST, 1)
-    // Set renderer pixel ratio & sizes
     this.renderer.setPixelRatio(window.devicePixelRatio)
     this.renderer.setSize(this.sizes.viewport.width, this.sizes.viewport.height)
-    // Resize renderer on resize event
     this.sizes.on('resize', () => {
       this.renderer.setSize(
         this.sizes.viewport.width,
@@ -200,11 +190,11 @@ export default class App {
     })
     this.renderer.shadowMap.type = PCFSoftShadowMap
 
-    // Set RequestAnimationFrame with 60ips
-
+    // Init camera vector
     this.vectCam = new Vector3(this.p1.x, this.p1.y +1.75, this.p1.z)
 
     this.time.on('tick', () => {
+      // Camera movement
       this.wheel.on('wheelMove', () => {
         if (this.curves[this.curveNumber] !== undefined) {
           this.MoveCamera()
@@ -219,6 +209,7 @@ export default class App {
       if (this.bloomComposer && this.finalComposer) {
         this.bgColor.lerp(this.bgTarget, 0.05)
 
+        // Postprocessing render
         this.renderer.setClearColor(0x000000, 1)
         this.scene.traverse(this.darkenNonBloomed.bind(this))
         this.bloomComposer.render()
@@ -228,21 +219,18 @@ export default class App {
       }
     })
   }
+
   setCamera() {
-    // Create camera instance
     this.camera = new Camera({
       sizes: this.sizes,
       renderer: this.renderer,
-      debug: this.debug,
     })
-    // Add camera to scene
     this.scene.add(this.camera.container)
   }
+
   setWorld() {
-    // Create world instance
     this.world = new World({
       time: this.time,
-      debug: this.debug,
       assets: this.assets,
       models: this.assets.models,
       textures: this.assets.textures,
@@ -252,18 +240,7 @@ export default class App {
       jsLaunch: this.jsLaunch,
       camera: this.camera.camera
     })
-    // Add world to scene
-    // this.camera.camera.add(this.world.container.listener)
-    console.log(this.world);
     this.scene.add(this.world.container)
-    // this.setGodRay()
-  }
-  setConfig() {
-    if (window.location.hash === '#debug') {
-      this.debug = new dat.GUI({
-        width: 420
-      })
-    }
   }
 
   setBloom() {
@@ -294,8 +271,8 @@ export default class App {
         fragmentShader: fragmentShader,
         defines: {}
       }), "baseTexture"
-    );
-    this.finalPass.needsSwap = true;
+    )
+    this.finalPass.needsSwap = true
 
     this.finalComposer = new EffectComposer(this.renderer)
     this.finalComposer.addPass(this.renderScene)
@@ -304,24 +281,23 @@ export default class App {
 
   darkenNonBloomed(obj) {
     if (obj.isMesh && this.bloomLayer.test(obj.layers) === false) {
-      this.materials[obj.uuid] = obj.material;
-      obj.material = this.darkMaterial;
+      this.materials[obj.uuid] = obj.material
+      obj.material = this.darkMaterial
     }
   }
 
   restoreMaterial(obj) {
     if (this.materials[obj.uuid]) {
-      obj.material = this.materials[obj.uuid];
-      delete this.materials[obj.uuid];
+      obj.material = this.materials[obj.uuid]
+      delete this.materials[obj.uuid]
     }
   }
 
   cameraDisplacement() {
     this.curves = []
 
+    // Scale curves
     CURVE_LIST.forEach((curve, index) => {
-
-
       if (index === 0) {
         this.scale = 1
       } else if (index === 1) {
@@ -331,47 +307,35 @@ export default class App {
       }
 
       for (var i = 0; i < curve.length; i++) {
-        var x = (curve[i][0] * this.scale) + (DECAL_SCENE) * index;
-        var y = curve[i][1] * this.scale;
-        var z = curve[i][2] * this.scale;
-        curve[i] = new Vector3(x, z, -y);
+        var x = (curve[i][0] * this.scale) + (DECAL_SCENE) * index
+        var y = curve[i][1] * this.scale
+        var z = curve[i][2] * this.scale
+        curve[i] = new Vector3(x, z, -y)
       }
 
       this.curves.push(new CatmullRomCurve3(curve))
-    });
+    })
 
+    // Init variables
     this.p1 = this.curves[0].points[0]
-
     this.Campercentage = 0
     this.curveNumber = 0
   }
 
-  setTube() {
-    const radius = .25;
-    const geometry = new TubeGeometry(this.curves[this.curveNumber], 50, radius, 10, false);
-
-    const material = new MeshBasicMaterial({
-      side: DoubleSide,
-      color: 0xFF0000,
-    });
-    this.tube = new Mesh(geometry, material)
-    this.scene.add(this.tube);
-  }
-
   MoveCamera() {
-    this.Campercentage += this.wheel.getDelta() * 0.00007;
+    this.Campercentage += this.wheel.getDelta() * 0.00007
 
     const forestContainer = this.world.container.children.find(child => child.name === "forest")
     const haloContainer = this.world.container.children.find(child => child.name === "halo")
     const cityContainer = this.world.container.children.find(child => child.name === "city")
 
-
     if (this.curveNumber === 0) {
+      // CAM TARGET
       if (this.camTarget !== CAM_FOREST) {
         this.camTarget = CAM_FOREST
       }
 
-      // If for showing info
+      // UI INFO
       if (this.Campercentage > 0.05 && this.Campercentage < 0.2) {
         this.jsForest.style.opacity = 1
         this.jsForest.classList.add('showed')
@@ -389,8 +353,8 @@ export default class App {
         this.jsForest.classList.remove('showed')
       }
 
-      // If for moving curveCam
-      if (this.Campercentage > 0.005) {
+      // SCENE TRANSITIONS
+      if (this.Campercentage > START_SCENE) {
         if (haloContainer.visible === true) {
           haloContainer.visible = false
         }
@@ -400,10 +364,7 @@ export default class App {
         if (this.bgTarget !== BG_FOREST) {
           this.bgTarget = BG_FOREST
         }
-      } else if (this.Campercentage <= 0.005) {
-        if (this.camTarget !== CAM_HALO) {
-          this.camTarget = CAM_HALO
-        }
+      } else if (this.Campercentage <= START_SCENE) {
         if (haloContainer.visible === false) {
           haloContainer.visible = true
         }
@@ -414,7 +375,7 @@ export default class App {
           this.bgTarget = BG_HALO
         }
       }
-      if (this.Campercentage <= 0.995) {
+      if (this.Campercentage <= END_SCENE) {
         if (cityContainer.visible === true) {
           cityContainer.visible = false
         }
@@ -424,7 +385,7 @@ export default class App {
         if (this.bgTarget !== BG_FOREST) {
           this.bgTarget = BG_FOREST
         }
-      } else if (this.Campercentage > 0.995) {
+      } else if (this.Campercentage > END_SCENE) {
         if (this.camTarget !== CAM_CITY1) {
           this.camTarget = CAM_CITY1
         }
@@ -439,13 +400,14 @@ export default class App {
         }
       }
     } else if (this.curveNumber === 1) {
+      // CAM TARGET
       if (this.Campercentage > 0.35 && this.Campercentage < 0.795 && this.camTarget !== CAM_CITY2) {
         this.camTarget = CAM_CITY2
       } else if ((this.Campercentage < 0.35 || this.Campercentage > 0.795) && this.camTarget !== CAM_CITY1) {
         this.camTarget = CAM_CITY1
       }
 
-      // If form showing info
+      // UI INFO
       if (this.Campercentage > 0.05 && this.Campercentage < 0.2) {
         this.jsCity.style.opacity = 1
         this.jsCity.classList.add('showed')
@@ -463,10 +425,8 @@ export default class App {
         this.jsCity.classList.remove('showed')
       }
 
-
-
-      // If for moving Curve cam
-      if (this.Campercentage > 0.005) {
+      // SCENE TRANSITIONS
+      if (this.Campercentage > START_SCENE) {
         if (forestContainer.visible === true) {
           forestContainer.visible = false
         }
@@ -476,7 +436,7 @@ export default class App {
         if (this.bgTarget !== BG_CITY) {
           this.bgTarget = BG_CITY
         }
-      } else if (this.Campercentage <= 0.005) {
+      } else if (this.Campercentage <= START_SCENE) {
         if (this.camTarget !== CAM_FOREST) {
           this.camTarget = CAM_FOREST
         }
@@ -490,7 +450,7 @@ export default class App {
           this.bgTarget = BG_FOREST
         }
       }
-      if (this.Campercentage <= 0.995) {
+      if (this.Campercentage <= END_SCENE) {
         if (haloContainer.visible === true) {
           haloContainer.visible = false
         }
@@ -500,7 +460,7 @@ export default class App {
         if (this.bgTarget !== BG_CITY) {
           this.bgTarget = BG_CITY
         }
-      } else if (this.Campercentage > 0.995) {
+      } else if (this.Campercentage > END_SCENE) {
         if (this.camTarget !== CAM_HALO) {
           this.camTarget = CAM_HALO
         }
@@ -515,11 +475,12 @@ export default class App {
         }
       }
     } else if (this.curveNumber === 2) {
+      // CAM TARGET
       if (this.camTarget !== CAM_HALO) {
         this.camTarget = CAM_HALO
       }
 
-      // If for showing info
+      // UI INFO
       if (this.Campercentage > 0.05 && this.Campercentage < 0.2) {
         this.jsHalo.style.opacity = 1
         this.jsHalo.classList.add('showed')
@@ -537,9 +498,8 @@ export default class App {
         this.jsHalo.classList.remove('showed')
       }
 
-
-      // If for moving Curve cam
-      if (this.Campercentage > 0.005) {
+      // SCENE TRANSITIONS
+      if (this.Campercentage > START_SCENE) {
         if (cityContainer.visible === true) {
           cityContainer.visible = false
         }
@@ -549,7 +509,7 @@ export default class App {
         if (this.bgTarget !== BG_HALO) {
           this.bgTarget = BG_HALO
         }
-      } else if (this.Campercentage <= 0.005) {
+      } else if (this.Campercentage <= START_SCENE) {
         if (cityContainer.visible === false) {
           cityContainer.visible = true
         }
@@ -563,7 +523,7 @@ export default class App {
           this.camTarget = CAM_CITY1
         }
       }
-      if (this.Campercentage <= 0.995) {
+      if (this.Campercentage <= END_SCENE) {
         if (forestContainer.visible === true) {
           forestContainer.visible = false
         }
@@ -573,10 +533,7 @@ export default class App {
         if (this.bgTarget !== BG_HALO) {
           this.bgTarget = BG_HALO
         }
-      } else if (this.Campercentage > 0.995) {
-        if (this.camTarget !== CAM_FOREST) {
-          this.camTarget = CAM_FOREST
-        }
+      } else if (this.Campercentage > END_SCENE) {
         if (forestContainer.visible === false) {
           forestContainer.visible = true
         }
@@ -589,6 +546,7 @@ export default class App {
       }
     }
 
+    // CHANGE CURVE
     if (this.Campercentage < 0 && this.curveNumber > 0) {
       this.Campercentage = 1
       this.curveNumber -= 1
@@ -596,7 +554,6 @@ export default class App {
       this.curveNumber = this.curves.length - 1
       this.Campercentage = 1
     }
-
     if (this.Campercentage > 1 && this.curveNumber < this.curves.length - 1) {
       this.Campercentage = 0
       this.curveNumber += 1
@@ -605,21 +562,8 @@ export default class App {
       this.Campercentage = 0
     }
 
-    this.p1 = this.curves[this.curveNumber].getPointAt(this.Campercentage);
-  }
-
-  homeMadeLerp(value1, value2, amount) {
-    amount = amount < 0 ? 0 : amount;
-    amount = amount > 1 ? 1 : amount;
-    return value1 + (value2 - value1) * amount;
-  }
-
-  showNav() {
-    this.jsMenu.addEventListener('click', () => {
-      this.body.classList.toggle('navOpen')
-      this.navigation.classList.toggle('js-openNav')
-      this.jsMenu.classList.toggle('js-buttonNavOpen')
-    })
+    // MOVE ON CURVE
+    this.p1 = this.curves[this.curveNumber].getPointAt(this.Campercentage)
   }
 
   changeCurve() {
@@ -630,11 +574,13 @@ export default class App {
         const cityContainer = this.world.container.children.find(child => child.name === "city")
         const CONTAINERS = [forestContainer, cityContainer, haloContainer]
 
+        // MOVE TO CURVE
         this.newCurveNumber = parseInt(button.dataset.curve)
         this.curveNumber = this.newCurveNumber
         this.Campercentage = 0.006
         this.MoveCamera()
 
+        // HIDE/SHOW CONTAINERS
         CONTAINERS.forEach((container, index) => {
           if (index === this.curveNumber) {
             container.visible = true
@@ -647,7 +593,15 @@ export default class App {
         this.navigation.classList.toggle('js-openNav')
         this.jsMenu.classList.toggle('js-buttonNavOpen')
       })
-    });
+    })
+  }
+
+  showNav() {
+    this.jsMenu.addEventListener('click', () => {
+      this.body.classList.toggle('navOpen')
+      this.navigation.classList.toggle('js-openNav')
+      this.jsMenu.classList.toggle('js-buttonNavOpen')
+    })
   }
 
 }

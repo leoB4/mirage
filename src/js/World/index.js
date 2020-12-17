@@ -1,12 +1,10 @@
 import { Object3D, AudioListener } from 'three'
-import Plan from './Plan'
 import Halo from './Halo/Halo'
 import City from './City/City'
 import Forest from './Forest/Forest.js'
 
 export default class World {
   constructor(options) {
-    // Set options
     this.time = options.time
     this.assets = options.assets
     this.BLOOM_SCENE = options.BLOOM_SCENE
@@ -15,17 +13,18 @@ export default class World {
     this.jsLaunch = options.jsLaunch
     this.camera = options.camera
 
-    // Set up
     this.container = new Object3D()
 
     this.setLoader()
   }
+
   init() {
     this.setAudioListener()
     this.setForest()
-    this.setHalo()
     this.setCity()
+    this.setHalo()
   }
+
   setLoader() {
     this.loadDiv = document.querySelector('.loadScreen')
     this.loadModels = this.loadDiv.querySelector('.load')
@@ -43,7 +42,6 @@ export default class World {
       })
 
       this.assets.on('ressourcesReady', () => {
-        console.log(this.jsLaunch);
         this.jsLaunch.addEventListener('click', ()=>{
           this.init()
           this.loadDiv.style.opacity = 0
@@ -51,44 +49,18 @@ export default class World {
             this.loadDiv.remove()
           }, 550)
         })
-
       })
     }
   }
+
   setAudioListener() {
-    this.listener = new AudioListener();
+    this.listener = new AudioListener()
     this.camera.add(this.listener)
-  }
-
-  setHalo() {
-    this.halo = new Halo({
-      time: this.time,
-      debug: this.debug,
-      assets: this.assets,
-      BLOOM_SCENE: this.BLOOM_SCENE,
-      listener: this.listener
-    })
-    this.halo.container.position.set(this.DECAL_SCENE*2,0,0)
-    // this.halo.container.visible = false
-    this.container.add(this.halo.container)
-  }
-
-  setCity() {
-    this.city = new City({
-      time: this.time,
-      debug: this.debug,
-      assets: this.assets,
-      listener: this.listener
-    })
-    this.city.container.position.set(this.DECAL_SCENE,0,0)
-    // this.city.container.visible = false
-    this.container.add(this.city.container)
   }
 
   setForest() {
     this.forest = new Forest({
       time: this.time,
-      debug: this.debug,
       assets: this.assets,
       listener: this.listener,
       BLOOM_SCENE: this.BLOOM_SCENE,
@@ -96,8 +68,27 @@ export default class World {
     })
     this.container.add(this.forest.container)
   }
-  setWall() {
-    this.wall = new Plan()
-    this.container.add(this.wall.container)
+
+  setCity() {
+    this.city = new City({
+      time: this.time,
+      assets: this.assets,
+      listener: this.listener
+    })
+    this.city.container.position.set(this.DECAL_SCENE,0,0)
+    this.city.container.visible = false
+    this.container.add(this.city.container)
+  }
+
+  setHalo() {
+    this.halo = new Halo({
+      time: this.time,
+      assets: this.assets,
+      BLOOM_SCENE: this.BLOOM_SCENE,
+      listener: this.listener
+    })
+    this.halo.container.position.set(this.DECAL_SCENE*2,0,0)
+    this.halo.container.visible = false
+    this.container.add(this.halo.container)
   }
 }

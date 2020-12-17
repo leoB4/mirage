@@ -10,38 +10,34 @@ import WavyDisc from './WavyDisc'
 
 export default class Forest {
     constructor(options) {
-        // Set options
         this.time = options.time
-        this.debug = options.debug
         this.assets = options.assets
         this.listener = options.listener
         this.BLOOM_SCENE = options.BLOOM_SCENE
         this.scene = options.scene
 
-        // Set up
         this.container = new Object3D()
         this.container.name = "forest"
 
         this.createForest()
-
     }
+
     createForest() {
         this.setModelForest()
         this.setDisc()
         this.setAmbientLight()
         this.setSpotLightForest()
     }
+
     setAmbientLight() {
         this.light = new AmbientLightSource({
-          debug: this.debugFolder,
           color: 0xaeaeae
         })
         this.container.add(this.light.container)
-      }
+    }
 
     setModelForest() {
         this.modelForest = new ModelForest({
-            debug: this.debugFolder,
             models: this.assets.models,
             time: this.time,
             listener: this.listener,
@@ -52,7 +48,6 @@ export default class Forest {
 
     setAltar() {
         this.altar = new Altar({
-            debug: this.debugFolder,
             models: this.assets.models,
             time: this.time,
             listener: this.listener,
@@ -63,7 +58,6 @@ export default class Forest {
 
     setDisc(){
         this.disc = new WavyDisc({
-            debug: this.debugFolder,
             models: this.assets.models,
             time: this.time,
             listener: this.listener,
@@ -92,5 +86,4 @@ export default class Forest {
         })
         this.container.add(this.spot1.container)
     }
-
 }
