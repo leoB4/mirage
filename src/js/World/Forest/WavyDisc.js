@@ -18,7 +18,8 @@ import {
     Vector3
 } from 'three'
 
-import AmbianceSound from '@sounds/TEST1.mp3'
+import waterSound from '@sounds/forest/eau.mp3'
+import AmbianceSound from '@sounds/forest/foret_ambiance.mp3'
 
 import {Water} from '@shaders/water.js'
 import waterNorm from '@textures/waternormals.jpg'
@@ -55,21 +56,34 @@ export default class WavyDisc {
     createDisc() {
 
         // create the PositionalAudio object (passing in the listener)
-        // this.sound = new PositionalAudio( this.listener );
+        this.sound = new PositionalAudio( this.listener );
 
         // load a sound and set it as the PositionalAudio object's buffer
-        // const audioLoader = new AudioLoader();
-        // audioLoader.load( AmbianceSound, (buffer)=> {
-        //   this.sound.setBuffer( buffer );
-        //   this.sound.setRefDistance( 10 );
-        //   this.sound.setLoop(true)
-        //   this.sound.play();
-        // });
+        const audioLoader = new AudioLoader();
+        audioLoader.load( waterSound, (buffer)=> {
+          this.sound.setBuffer( buffer );
+          this.sound.setRefDistance( 10 );
+          this.sound.setLoop(true)
+          this.sound.setVolume(3)
+          this.sound.play();
+        });
+        
+        this.soundAmbiance = new PositionalAudio( this.listener );
 
-        // this.cerceau.add(this.sound)
+        // load a sound and set it as the PositionalAudio object's buffer
+        const audioAmbiance = new AudioLoader();
+        audioAmbiance.load( AmbianceSound, (buffer)=> {
+          this.soundAmbiance.setBuffer( buffer );
+          this.soundAmbiance.setRefDistance( 6 );
+          this.soundAmbiance.setLoop(true)
+          this.soundAmbiance.setVolume(1)
+          this.soundAmbiance.play();
+        });
 
+        
+        
         const disc = new CircleBufferGeometry(16, 64)
-
+        
         this.water = new Water(
             disc,
             {
@@ -85,11 +99,12 @@ export default class WavyDisc {
                 distortionScale: 3.7,
                 fog: this.scene.fog !== undefined
             }
-        );
-
-
+            );
+            
+        
+            
         this.water.rotation.x = -Math.PI / 2
-        this.container.add(this.water)
+        this.container.add(this.water, this.sound, this.soundAmbiance)
         this.container.position.set(2, 0, 0)
     }
 
