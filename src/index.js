@@ -12,4 +12,5 @@ new App({
   jsHalo: document.querySelector('.js-halo'),
 
   expoButton: document.querySelectorAll('.expoButton'),
+  jsLaunch: document.querySelector('.js-launch')
 })

@@ -2,7 +2,6 @@ import { Object3D } from 'three'
 import AmbientLightSource from '@world/AmbientLight'
 import Cerceau from './Cerceau.js'
 import Dune from './Dune.js'
-import SpotDune from './SpotDune'
 
 export default class Halo {
   constructor(options) {
@@ -29,7 +28,7 @@ export default class Halo {
   setAmbientLight() {
     this.light = new AmbientLightSource({
       debug: this.debugFolder,
-      color: 0x898989
+      color: 0x9c9c9c
     })
     this.container.add(this.light.container)
   }
@@ -38,6 +37,7 @@ export default class Halo {
     this.dunes = new Dune({
       time: this.time,
       models: this.assets.models,
+      listener: this.listener,
     })
     this.container.add(this.dunes.container)
   }

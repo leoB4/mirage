@@ -1,4 +1,4 @@
-import { Object3D } from 'three'
+import { Object3D, AudioListener } from 'three'
 import Plan from './Plan'
 import Halo from './Halo/Halo'
 import City from './City/City'
@@ -8,24 +8,20 @@ export default class World {
   constructor(options) {
     // Set options
     this.time = options.time
-    this.debug = options.debug
     this.assets = options.assets
     this.BLOOM_SCENE = options.BLOOM_SCENE
     this.DECAL_SCENE = options.DECAL_SCENE
-    this.listener = options.listener
     this.scene = options.scene
+    this.jsLaunch = options.jsLaunch
+    this.camera = options.camera
 
     // Set up
     this.container = new Object3D()
 
-    if (this.debug) {
-      this.debugFolder = this.debug.addFolder('World')
-      this.debugFolder.open()
-    }
-
     this.setLoader()
   }
   init() {
+    this.setAudioListener()
     this.setForest()
     this.setHalo()
     this.setCity()
@@ -47,15 +43,23 @@ export default class World {
       })
 
       this.assets.on('ressourcesReady', () => {
-        this.init()
-
+        console.log(this.jsLaunch);
+        this.jsLaunch.addEventListener('click', ()=>{
+          this.init()
           this.loadDiv.style.opacity = 0
           setTimeout(() => {
             this.loadDiv.remove()
           }, 550)
+        })
+
       })
     }
   }
+  setAudioListener() {
+    this.listener = new AudioListener();
+    this.camera.add(this.listener)
+  }
+
   setHalo() {
     this.halo = new Halo({
       time: this.time,

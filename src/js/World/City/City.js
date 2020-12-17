@@ -40,7 +40,7 @@ export default class City {
   setAmbientLight() {
     this.light = new AmbientLightSource({
       debug: this.debugFolder,
-      color: 0x303030
+      color: 0xc2c2c2
     })
     this.container.add(this.light.container)
   }
@@ -81,7 +81,7 @@ export default class City {
       angleSpot: 1,
       positionTarget: {x:10,y:-50,z:-10},
     })
-    this.container.add(this.spot1.container, this.spot2.container, this.spotDebris.container, this.spotAll.container)
+    this.container.add(this.spotDebris.container, this.spotAll.container)
   }
 
   setMovingSpot() {
@@ -89,8 +89,8 @@ export default class City {
       time: this.time,
       assets: this.assets,
       position: {y:86,z:45},
-      intensity: 8,
-      distanceSpot: 280,
+      intensity: 10,
+      distanceSpot: 480,
       angleSpot: 0.5,
       index: 20,
       direction: "x",
@@ -100,8 +100,8 @@ export default class City {
       time: this.time,
       assets: this.assets,
       position: {x:-56,y:86},
-      intensity: 8,
-      distanceSpot: 280,
+      intensity: 10,
+      distanceSpot: 480,
       angleSpot: 0.5,
       index: 21,
       direction: "z",
@@ -111,8 +111,8 @@ export default class City {
       time: this.time,
       assets: this.assets,
       position: {y:86,z:-85},
-      intensity: 8,
-      distanceSpot: 280,
+      intensity: 10,
+      distanceSpot: 480,
       angleSpot: 0.5,
       index: 22,
       direction: "x",
