@@ -14,16 +14,17 @@ import {
 } from 'three'
 import {
   EffectComposer
-} from '../postprocessing/EffectComposer.js'
+} from 'three/examples/jsm/postprocessing/EffectComposer'
 import {
   RenderPass
-} from '../postprocessing/RenderPass.js'
+} from 'three/examples/jsm/postprocessing/RenderPass'
 import {
   ShaderPass
-} from '../postprocessing/ShaderPass.js'
+} from 'three/examples/jsm/postprocessing/ShaderPass'
 import {
   UnrealBloomPass
-} from '../postprocessing/UnrealBloomPass.js'
+} from 'three/examples/jsm/postprocessing/UnrealBloomPass'
+import { FilmPass } from 'three/examples/jsm/postprocessing/FilmPass'
 import vertexShader from '@shaders/vertexShader.vert'
 import fragmentShader from '@shaders/fragmentShader.frag'
 
@@ -274,9 +275,11 @@ export default class App {
     )
     this.finalPass.needsSwap = true
 
+    this.filmPass = new FilmPass(0.15, 0, 0, false)
     this.finalComposer = new EffectComposer(this.renderer)
     this.finalComposer.addPass(this.renderScene)
     this.finalComposer.addPass(this.finalPass)
+    this.finalComposer.addPass(this.filmPass)
   }
 
   darkenNonBloomed(obj) {

@@ -12,7 +12,7 @@ import {
 import waterSound from '@sounds/forest/eau.mp3'
 import AmbianceSound from '@sounds/forest/foret_ambiance.mp3'
 
-import { Water } from '@shaders/water.js'
+import { Water } from 'three/examples/jsm/objects/Water'
 import waterNorm from '@textures/waternormals.jpg'
 
 import Altar from './Altar'
