@@ -29,24 +29,47 @@ export default class World {
     this.loadDiv = document.querySelector('.loadScreen')
     this.loadModels = this.loadDiv.querySelector('.load')
     this.progress = this.loadDiv.querySelector('.progress')
+    this.homeDiv = document.querySelector('.home')
+    this.mirage = document.querySelector('.mirage')
+    this.festival = document.querySelector('.festival')
+    this.year = document.querySelector('.year')
+    this.homeInfo = document.querySelector('.home-info')
+    this.body = document.querySelector('body')
 
     if (this.assets.total === 0) {
       this.init()
       this.loadDiv.remove()
     } else {
       this.assets.on('ressourceLoad', () => {
-        this.progress.style.width = this.loadModels.innerHTML = `${
+        this.progress.style.width = `${
           Math.floor((this.assets.done / this.assets.total) * 100) +
           Math.floor((1 / this.assets.total) * this.assets.currentPercent)
         }%`
       })
 
       this.assets.on('ressourcesReady', () => {
+        this.loadDiv.style.opacity = 0
+        setTimeout(() => {
+          this.loadDiv.remove()
+        }, 550)
+        this.homeDiv.style.opacity = 1
+        this.mirage.style.opacity = 1
+        this.mirage.style.transform = "rotate(0deg) translateY(0)"
+        this.festival.style.opacity = 1
+        this.festival.style.transform = "rotate(0deg) translateY(0)"
+        this.year.style.opacity = 1
+        this.year.style.transform = "rotate(0deg) translateY(0)"
+        this.homeInfo.style.opacity = 1
+        this.homeInfo.style.transform = "rotate(0deg) translateY(0)"
+        this.jsLaunch.style.opacity = 1
         this.jsLaunch.addEventListener('click', ()=>{
           this.init()
-          this.loadDiv.style.opacity = 0
           setTimeout(() => {
-            this.loadDiv.remove()
+            this.homeDiv.style.opacity = 0
+            setTimeout(()=>{
+              this.homeDiv.remove()
+              this.body.classList.toggle('onLoading')
+            }, 550)
           }, 550)
         })
       })

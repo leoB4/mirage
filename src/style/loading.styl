@@ -8,14 +8,16 @@
   flex-direction column
   justify-content center
   align-items center
-  transition 0.32s opacity ease-out
+  transition: 3s cubic-bezier(.165, .84, .44, 1)
 
-.load
+.load, .loadText
   margin 0
   padding 0
   color #fff
-  font-family Montserrat
-  user-select none
+  font-family Lausanne
+  font-weight 400
+  font-size 1.7em
+  animation: 3s ease-in-out infinite alternate opacityChange
 
 .start
   margin-top 20px
@@ -30,3 +32,25 @@
   transition 0.32s ease transform
   &:hover
     transform scale(0.95)
+
+.progressBar
+  border-radius 10px
+  width 100%
+  background-color #232323
+  margin-top: 5px
+
+.progress
+  border-radius 8px
+  width 0px
+  height 2px
+  background-color #fff
+  transition 0.32s ease-out width
+
+@keyframes opacityChange {
+  0%{
+    opacity: 0  
+  }
+  100%{
+    opacity: 1  
+  }
+}

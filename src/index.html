@@ -7,14 +7,25 @@
     <link rel="shortcut icon" href="./favicon.ico" type="image/x-icon">
     <title>THREE.js Template</title>
 </head>
-<body>
+<body class="onLoading">
     <div class="loadScreen">
-        <h1 class="load">0%</h1>
+      <div class="loadText">
+        <p>The experience is better with sound on and headphones.</p> 
         <div class="progressBar">
           <div class="progress"></div>
-          <button class="js-launch">Enter</button>
         </div>
       </div>
+    </div>
+
+    <div class="home">
+      <div class="home-title">
+        <p> <span class="mirage">Mirage</span><span class="festival">Festival</span><span class="year">2020</span>
+        </p>
+        <div class="home-info">To celebrate 8 years of promoting artistic innovation and digital creation, the 9th edition of the mirage festival goes beyond reality to offer a full digital experience of the past exposition.</div>
+      </div>
+      
+      <button class="js-launch">Enter <span></span> </button>
+    </div>
 
     <div class="header">
       <div class="header-info">
@@ -33,26 +44,38 @@
       <div class="nav"></div>
       <div class="nav-content">
         <div class="nav-item">
-          <div class="item-text t1">
-            <p>Circular <span>Frontier</span> </p>
-            <button class="expoButton" data-curve="0">Check the exposition <span></span> </button>
+          <div class="wrapper-image neon">
+            <img src="../static/neon.png" alt="" class="navPic">
+          </div>
+          <div class="wrapper-text">
+            <div class="item-text t1">
+              <p>Circular <span>Frontier</span> </p>
+              <button class="expoButton" data-curve="0">Check the exposition <span></span> </button>
+            </div>
           </div>
         </div>
         <div class="nav-item">
-          <div class="item-text t2">
-            <p>Cenotaph <span>Zero</span> </p>
-            <button class="expoButton" data-curve="1">Check the exposition <span></span></button>
+          <div class="wrapper-image table">
+            <img src="../static/table.png" alt="" class="navPic">
+          </div>
+          <div class="wrapper-text">
+            <div class="item-text t2">
+              <p>Cenotaph <span>Zero</span> </p>
+              <button class="expoButton" data-curve="1">Check the exposition <span></span></button>
+            </div>
           </div>
         </div>
         <div class="nav-item">
-          <div class="item-text t3">
-            <p>Warping <span>Halo</span> </p>
-            <button class="expoButton" data-curve="2">Check the exposition <span></span></button>
+          <div class="wrapper-image rock">
+            <img src="../static/rock.png" alt="" class="navPic">
+          </div>
+          <div class="wrapper-text">
+            <div class="item-text t3">
+              <p>Warping <span>Halo</span> </p>
+              <button class="expoButton" data-curve="2">Check the exposition <span></span></button>
+            </div>
           </div>
         </div>
-      </div>
-      <div class="button-credits">
-        <button>credits <span></span> </button>
       </div>
     </div>
     
