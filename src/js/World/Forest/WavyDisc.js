@@ -100,11 +100,13 @@ export default class WavyDisc {
 
             this["altar-" + index] = new Altar({
                 models: this.models,
-                BLOOM_SCENE: this.BLOOM_SCENE
+                BLOOM_SCENE: this.BLOOM_SCENE,
+                time: this.time,
+                index,
+                number: this.numberAltars
             })
             this["altar-" + index].container.position.set(16.5 * Math.cos(Math.PI * 2 * index / this.numberAltars), -0.3, 16.5 * Math.sin(Math.PI * 2 * index / this.numberAltars))
             this["altar-" + index].container.lookAt(0, 0, 0)
-            //   this["altar-"+index].container.rotation.y = Math.PI/2
             this.altars.push("altar-" + index)
         }
         this.container.add(...this.altars.map(altar => this[altar].container))
@@ -112,14 +114,6 @@ export default class WavyDisc {
 
     setMovement() {
         this.time.on('tick', () => {
-            // this.container.rotation.y += 0.005
-
-            // this.lights.forEach((light, index) => {
-            //     this[light].color = new Color(`hsl(${(this.spendTime + (index * 360 / 25))%360}, 100%, 50%)`)
-            // })
-
-            // this.spendTime += 1
-
             this.water.material.uniforms[ 'time' ].value += 0.001
         })
     }
