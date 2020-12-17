@@ -390,6 +390,30 @@ export default class App {
       }
 
       // If for moving curveCam
+      if (this.Campercentage > 0.005) {
+        if (haloContainer.visible === true) {
+          haloContainer.visible = false
+        }
+        if (this.scene.fog !== FOG_FOREST) {
+          this.scene.fog = FOG_FOREST
+        }
+        if (this.bgTarget !== BG_FOREST) {
+          this.bgTarget = BG_FOREST
+        }
+      } else if (this.Campercentage <= 0.005) {
+        if (this.camTarget !== CAM_HALO) {
+          this.camTarget = CAM_HALO
+        }
+        if (haloContainer.visible === false) {
+          haloContainer.visible = true
+        }
+        if (this.scene.fog !== FOG_HALO) {
+          this.scene.fog = FOG_HALO
+        }
+        if (this.bgTarget !== BG_HALO) {
+          this.bgTarget = BG_HALO
+        }
+      }
       if (this.Campercentage <= 0.995) {
         if (cityContainer.visible === true) {
           cityContainer.visible = false
@@ -401,6 +425,9 @@ export default class App {
           this.bgTarget = BG_FOREST
         }
       } else if (this.Campercentage > 0.995) {
+        if (this.camTarget !== CAM_CITY1) {
+          this.camTarget = CAM_CITY1
+        }
         if (cityContainer.visible === false) {
           cityContainer.visible = true
         }
@@ -450,6 +477,9 @@ export default class App {
           this.bgTarget = BG_CITY
         }
       } else if (this.Campercentage <= 0.005) {
+        if (this.camTarget !== CAM_FOREST) {
+          this.camTarget = CAM_FOREST
+        }
         if (forestContainer.visible === false) {
           forestContainer.visible = true
         }
@@ -471,6 +501,9 @@ export default class App {
           this.bgTarget = BG_CITY
         }
       } else if (this.Campercentage > 0.995) {
+        if (this.camTarget !== CAM_HALO) {
+          this.camTarget = CAM_HALO
+        }
         if (haloContainer.visible === false) {
           haloContainer.visible = true
         }
@@ -525,6 +558,33 @@ export default class App {
         }
         if (this.bgTarget !== BG_CITY) {
           this.bgTarget = BG_CITY
+        }
+        if (this.camTarget !== CAM_CITY1) {
+          this.camTarget = CAM_CITY1
+        }
+      }
+      if (this.Campercentage <= 0.995) {
+        if (forestContainer.visible === true) {
+          forestContainer.visible = false
+        }
+        if (this.scene.fog !== FOG_HALO) {
+          this.scene.fog = FOG_HALO
+        }
+        if (this.bgTarget !== BG_HALO) {
+          this.bgTarget = BG_HALO
+        }
+      } else if (this.Campercentage > 0.995) {
+        if (this.camTarget !== CAM_FOREST) {
+          this.camTarget = CAM_FOREST
+        }
+        if (forestContainer.visible === false) {
+          forestContainer.visible = true
+        }
+        if (this.scene.fog !== FOG_FOREST) {
+          this.scene.fog = FOG_FOREST
+        }
+        if (this.bgTarget !== BG_FOREST) {
+          this.bgTarget = BG_FOREST
         }
       }
     }
