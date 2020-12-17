@@ -21,10 +21,7 @@ export default class Cerceau {
       positionZ: 0,
     }
 
-    this.spendTime = 0
-
     this.createCerceau()
-    // this.createLight()
     this.setMovement()
 
   }
@@ -53,7 +50,6 @@ export default class Cerceau {
     // this.cerceau.add(this.sound)
 
     const circleLum = new CylinderBufferGeometry(6.76,6.76,0.9,45,1,true)
-    // const materialS = new MeshPhongMaterial( { color: 0xdedede, shininess: 0, side: DoubleSide} )
     const shaderMaterial = new ShaderMaterial( {
       fragmentShader: haloShaderFrag,
       vertexShader: ledShaderVert,
@@ -75,33 +71,14 @@ export default class Cerceau {
     this.container.add(this.bloomCircle, this.cerceau)
   }
 
-  createLight() {
-    this.lights = []
-    const sphere = new SphereBufferGeometry( 0.001, 16, 8 );
-
-    for (let index = 0; index < 25; index++){
-      const color = new Color(`hsl(${index/25*255}, 100%, 50%)`)
-      this["light-"+index] = new PointLight(color, 1)
-      this["light-"+index].distance = 10
-      this["light-"+index].position.set(0, 6.7 * Math.cos(Math.PI*2* index / 25  ), 6.7 * Math.sin(Math.PI*2* index / 25))
-      this["light-"+index].add(new Mesh( sphere, new MeshBasicMaterial( {color} ) ))
-      this.lights.push("light-"+index)
-      this["light-"+index].layers.enable(this.BLOOM_SCENE)
-    }
-    this.container.add(...this.lights.map(light=>this[light]))
-  }
-
   setMovement() {
     this.time.on('tick', () => {
       this.container.rotation.y += 0.005
 
-      // this.lights.forEach((light, index) => {
-      //   this[light].color = new Color(`hsl(${(this.spendTime + (index * 360 / 25))%360}, 100%, 50%)`)
-      // })
-
-      this.bloomCircle.material.uniforms.time.value += 0.001
-
-      this.spendTime += 1
+      this.bloomCircle.material.uniforms.time.value += 0.002
+      if (this.bloomCircle.material.uniforms.time.value > 4 + 2 * Math.PI / 2.) {
+        this.bloomCircle.material.uniforms.time.value = 0
+      }
     })
   }
 

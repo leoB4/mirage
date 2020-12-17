@@ -37,7 +37,8 @@ export default class Altar {
             fragmentShader: ledShaderFrag,
             vertexShader: ledShaderVert,
             uniforms: {
-                time: { value: - Math.PI / 2 },
+                M_PI: { value: Math.PI },
+                time: { value: Math.PI / 2 },
                 index: { value: this.index },
                 number: { value: this.number }
             }
@@ -57,6 +58,9 @@ export default class Altar {
     setMovement() {
         this.time.on('tick', () => {
             this.planeMesh.material.uniforms.time.value += 0.02
+            if (this.planeMesh.material.uniforms.time.value >= 30 * Math.PI / 2) {
+                this.planeMesh.material.uniforms.time.value = 0
+            }
         })
     }
 }
