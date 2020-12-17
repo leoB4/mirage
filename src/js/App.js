@@ -22,7 +22,7 @@ const DECAL_SCENE = -500
 
 const FOG_HALO = new FogExp2(0x998162,0.0062)
 const FOG_CITY = new FogExp2(0x111111,0.0062)
-const FOG_FOREST = new FogExp2(0x111111,0.0062)
+const FOG_FOREST = new FogExp2(0x111111,0.009)
 
 const BG_HALO = new Color(0x998162)
 const BG_CITY = new Color(0x111111)
@@ -107,6 +107,16 @@ export default class App {
     this.bgColor = BG_FOREST.clone()
     this.bgTarget = BG_FOREST.clone()
 
+    // Document query Selector for UI
+    this.jsMenu = options.jsMenu
+    this.body = options.body
+    this.navigation = options.navigation
+    this.jsForest = options.jsForest
+    this.jsCity = options.jsCity
+    this.jsHalo = options.jsHalo
+
+    this.expoButton = options.expoButton
+    
 
     this.setConfig()
     this.cameraDisplacement()
@@ -116,6 +126,8 @@ export default class App {
     // this.setAudioListener()
     this.setWorld()
     this.setBloom()
+    this.showNav()
+    this.changeCurve()
   }
   setRenderer() {
     // Set scene
@@ -165,10 +177,9 @@ export default class App {
 
       this.vectCam.set(this.p1.x, this.p1.y , this.p1.z)
       this.camera.camera.position.lerp(this.vectCam, 0.1)
-
       this.camLook.lerp(this.camTarget, 0.05)
       this.camera.camera.lookAt(this.camLook)
-
+      
       if (this.bloomComposer && this.finalComposer) {
         this.bgColor.lerp(this.bgTarget, 0.05)
 
@@ -310,6 +321,26 @@ export default class App {
       if (this.camTarget !== CAM_FOREST)  {
         this.camTarget = CAM_FOREST
       }
+
+      // If for showing info
+      if(this.Campercentage >0.05 && this.Campercentage < 0.2){
+        this.jsForest.style.opacity = 1
+        this.jsForest.classList.add('showed')
+      }
+      if(this.Campercentage > 0.2 && this.jsForest.classList.contains('showed') ){
+          this.jsForest.style.opacity = 0
+          this.jsForest.classList.remove('showed')
+      }
+      if(this.Campercentage < 0.2 && this.Campercentage > 0.05 && !this.jsForest.classList.contains('showed')){
+        this.jsForest.style.opacity = 1
+        this.jsForest.classList.add('showed')
+      }
+      if(this.Campercentage < 0.05 && this.jsForest.classList.contains('showed')){
+        this.jsForest.style.opacity = 0
+        this.jsForest.classList.remove('showed')
+      }
+
+      // If for moving curveCam
       if (this.Campercentage <= 0.995) {
         if (cityContainer.visible === true) {
           cityContainer.visible = false
@@ -338,6 +369,27 @@ export default class App {
         this.camTarget = CAM_CITY1
       }
 
+      // If form showing info
+      if(this.Campercentage >0.05 && this.Campercentage < 0.2){
+        this.jsCity.style.opacity = 1
+        this.jsCity.classList.add('showed')
+      }
+      if(this.Campercentage > 0.2 && this.jsCity.classList.contains('showed') ){
+          this.jsCity.style.opacity = 0
+          this.jsCity.classList.remove('showed')
+      }
+      if(this.Campercentage < 0.2 && this.Campercentage > 0.05 && !this.jsCity.classList.contains('showed')){
+        this.jsCity.style.opacity = 1
+        this.jsCity.classList.add('showed')
+      }
+      if(this.Campercentage < 0.05 && this.jsCity.classList.contains('showed')){
+        this.jsCity.style.opacity = 0
+        this.jsCity.classList.remove('showed')
+      }
+
+
+
+      // If for moving Curve cam
       if (this.Campercentage > 0.005) {
         if (forestContainer.visible === true) {
           forestContainer.visible = false
@@ -385,6 +437,26 @@ export default class App {
         this.camTarget = CAM_HALO
       }
 
+      // If for showing info
+      if(this.Campercentage >0.05 && this.Campercentage < 0.2){
+        this.jsHalo.style.opacity = 1
+        this.jsHalo.classList.add('showed')
+      }
+      if(this.Campercentage > 0.2 && this.jsHalo.classList.contains('showed') ){
+          this.jsHalo.style.opacity = 0
+          this.jsHalo.classList.remove('showed')
+      }
+      if(this.Campercentage < 0.2 && this.Campercentage > 0.05 && !this.jsHalo.classList.contains('showed')){
+        this.jsHalo.style.opacity = 1
+        this.jsHalo.classList.add('showed')
+      }
+      if(this.Campercentage < 0.05 && this.jsHalo.classList.contains('showed')){
+        this.jsHalo.style.opacity = 0
+        this.jsHalo.classList.remove('showed')
+      }
+
+
+      // If for moving Curve cam
       if (this.Campercentage > 0.005) {
         if (cityContainer.visible === true) {
           cityContainer.visible = false
@@ -429,6 +501,76 @@ export default class App {
     amount = amount < 0 ? 0 : amount;
     amount = amount > 1 ? 1 : amount;
     return value1 + (value2 - value1) * amount;
+  }
+
+  showNav() {
+    this.jsMenu.addEventListener('click', ()=>{
+      this.body.classList.toggle('navOpen')
+      this.navigation.classList.toggle('js-openNav')
+      this.jsMenu.classList.toggle('js-buttonNavOpen')
+    })
+  }
+
+  changeCurve(){
+    console.log(this.expoButton);
+    this.expoButton.forEach(button => {
+      button.addEventListener('click', ()=>{
+        const forestContainer = this.world.container.children.find(child=>child.name === "forest")
+        const haloContainer = this.world.container.children.find(child=>child.name === "halo")
+        const cityContainer = this.world.container.children.find(child=>child.name === "city")
+        const CONTAINERS = [forestContainer, cityContainer, haloContainer]
+
+        this.newCurveNumber = parseInt(button.dataset.curve)
+        console.log(this.newCurveNumber);
+        this.curveNumber = this.newCurveNumber
+        this.Campercentage = 0.006
+        this.MoveCamera()
+
+        CONTAINERS.forEach((container, index)=>{
+          if(index === this.curveNumber){
+            container.visible = true
+          } else{
+            container.visible = false
+          }
+        })
+
+        this.body.classList.toggle('navOpen')
+        this.navigation.classList.toggle('js-openNav')
+        this.jsMenu.classList.toggle('js-buttonNavOpen')
+      })
+    });
+
+    // this.expoButton.addEventListener('click', ()=>{
+    //   const forestContainer = this.world.container.children.find(child=>child.name === "forest")
+    //   console.log(this.world.container.children);
+    //   const haloContainer = this.world.container.children.find(child=>child.name === "halo")
+    //   const cityContainer = this.world.container.children.find(child=>child.name === "city")
+    //   this.newCurveNumber = parseInt(this.expoForest.dataset.curve)
+    //   console.log(this.curveNumber);
+    //   this.curveNumber = this.newCurveNumber
+    //   this.Campercentage = 0.5
+    //   this.MoveCamera()
+    //   if (this.scene.fog !== FOG_FOREST) {
+    //     this.scene.fog = FOG_FOREST
+    //   }
+    //   if (this.bgTarget !== BG_FOREST) {
+    //     this.bgTarget = BG_FOREST
+    //   }
+    //   if (this.camTarget !== CAM_FOREST)  {
+    //     this.camTarget = CAM_FOREST
+    //   }
+    //   if(this.curveNumber !== this.newCurveNumber){
+    //     forestContainer.visible = true
+    //     cityContainer.visible = false
+    //     haloContainer.visible = false
+    //   }
+    //   console.log(this.curveNumber);
+      
+    //   this.body.classList.toggle('navOpen')
+    //   this.navigation.classList.toggle('js-openNav')
+    //   this.jsMenu.classList.toggle('js-buttonNavOpen')
+      
+    // })
   }
 
 }

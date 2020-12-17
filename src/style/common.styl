@@ -7,3 +7,257 @@ canvas
   width 100%
   height 100%
   outline none
+
+.header
+  width: 95%
+  display: flex
+  flex-flow: row nowrap
+  justify-content: space-between
+  align-items: center
+  position: absolute
+  top: 2%
+  left: 50%
+  transform: translate(-50%, 0)
+  z-index 200
+
+  .header-info
+    font-family Lausanne
+    color: #FFF
+    font-size 0.85em
+    padding 10px
+
+  .js-buttonNavOpen
+    position relative
+    .frth
+      opacity: 0
+      transform: translateX(100%)
+
+    .frst
+      transform: rotate(45deg) translate(0,20px)
+      width: 150%
+      height: 2px
+
+    .thrd
+      transform: rotate(-45deg) translate(0,-20px)
+      width: 150%
+      height: 2px
+
+    .toCircle
+      background-color transparent
+      border: 1px solid #FFF
+      width: 70px
+      height: 70px
+      border-radius: 50%
+      top: 50% !important
+      left: 50% !important
+      transform: translate(-60%, -50%)
+
+  .menu
+    width: 30px
+    height: 30px
+    display flex
+    flex-flow: row wrap
+    align-items: flex-start
+    justify-content: space-between
+    position relative
+    cursor: pointer
+    
+    span
+      width: 5px
+      height: 5px
+      background-color #fff
+      display: block
+      transition: .5s cubic-bezier(.165, .84, .44, 1)
+      position absolute
+    
+    .frst
+      top: 0
+      left: 0
+      transform-origin: center 
+
+    .scnd
+      top: 0
+      right: 0
+
+    .thrd
+      bottom: 0
+      left: 0
+      transform-origin: center 
+
+    .frth
+      bottom: 0
+      right: 0
+    
+    &:hover
+      .scnd, .frth
+        opacity: 0
+
+      .frst
+        width: 150%
+        height: 2px
+
+      .thrd
+        width: 150%
+        height: 2px
+
+.wrapper
+  width: 100%
+  height 100%
+  position absolute
+  z-index 50
+  display: flex
+  align-items: center
+
+  .showed
+    .title
+      .creator
+        opacity: 1
+      .objectName1, .objectName2
+        transform: rotate(0) translateY(0)
+        opacity: 1
+    .description
+      transform: translateY(0)
+      opacity: 1
+      
+
+.content
+  display flex
+  flex-flow column nowrap
+  align-items: flex-start
+  width: 300px
+  margin-left: 17%
+  transition: .5s cubic-bezier(.165, .84, .44, 1)
+
+  .title
+    color: #ffffff
+    position relative
+    font-size: 5em
+    font-family Lausanne
+    font-weight: 400
+
+    span
+      display: block
+      margin: 5px 0
+      transition: .9s cubic-bezier(.165, .84, .44, 1)
+    
+    .creator
+      position: absolute
+      font-size 0.85rem
+      opacity: 0
+      transition: .9s cubic-bezier(.165, .84, .44, 1)
+      transition-delay: .2s
+
+      span
+        display: block
+    
+    .objectName1
+      transform-origin: left bottom
+      transform: rotate(-10deg) translateY(-50px)
+      opacity: 0
+
+    .objectName2
+      transform-origin: left top
+      transform: rotate(10deg) translateY(20px)
+      opacity: 0
+
+  .description
+    color: #ffffff
+    font-size 0.85em
+    font-family Lausanne
+    letter-spacing: 1px
+    line-height: 18px
+    transition: .9s cubic-bezier(.165, .84, .44, 1)
+    transform-origin: left top
+    transform: translateY(50px)
+    opacity: 0
+
+
+.js-forest
+  opacity: 0
+
+  .title
+    .creator
+      bottom: 20%
+      right: -30%
+
+.js-city
+  opacity: 0
+
+  .title
+    .creator
+      bottom: 15%
+      left: 55%
+
+.js-halo
+  opacity: 0
+
+  .title
+    .creator
+      bottom: 15%
+      left: 60%
+
+
+
+.nav
+  width: 100%
+  height: 100%
+  background-color #000
+  position: absolute
+  z-index 100
+  transform: translateY(100%)
+  transition: .5s cubic-bezier(.165, .84, .44, 1)
+
+  button
+    background-color transparent
+    cursor: pointer
+    border: none
+    color: #FFF
+    font-family Lausanne
+    font-size 0.85em
+    padding: 5px
+    position relative
+    outline: none
+
+    span
+      width:  100%
+      height: 2px
+      background-color #fff
+      position: absolute
+      bottom: -2%
+      left: 0
+      transform-origin: left center
+      transform: scaleX(0)
+      transition: .5s cubic-bezier(.165, .84, .44, 1)
+    
+    &:hover
+      span
+        transform: scaleX(1)
+
+  .nav-content
+    position: absolute
+    top: 50%
+    left: 50%
+    width: 90%
+    display: flex
+    flex-flow row wrap
+    align-items: center
+    justify-content: space-around
+    transform translate(-50%,-50%)
+
+    .item-text
+      color: #FFF
+      font-family Lausanne
+
+      p
+        font-size 5em
+
+        span
+          display block
+  
+  .button-credits
+    position: absolute
+    bottom: 3%
+    right: 3% 
+
+.js-openNav
+  transform: translateY(0%)
