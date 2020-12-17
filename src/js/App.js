@@ -156,7 +156,6 @@ export default class App {
     this.setConfig()
     this.cameraDisplacement()
     this.setRenderer()
-    // this.setTube()
     this.setCamera()
     this.setWorld()
     this.setBloom()
@@ -365,7 +364,7 @@ export default class App {
     const forestContainer = this.world.container.children.find(child => child.name === "forest")
     const haloContainer = this.world.container.children.find(child => child.name === "halo")
     const cityContainer = this.world.container.children.find(child => child.name === "city")
-    
+
 
     if (this.curveNumber === 0) {
       if (this.camTarget !== CAM_FOREST) {
@@ -533,17 +532,17 @@ export default class App {
     if (this.Campercentage < 0 && this.curveNumber > 0) {
       this.Campercentage = 1
       this.curveNumber -= 1
-      this.setTube()
     } else if (this.Campercentage < 0) {
-      this.Campercentage = 0
+      this.curveNumber = this.curves.length - 1
+      this.Campercentage = 1
     }
 
     if (this.Campercentage > 1 && this.curveNumber < this.curves.length - 1) {
       this.Campercentage = 0
       this.curveNumber += 1
-      this.setTube()
     } else if (this.Campercentage > 1) {
-      this.Campercentage = 1
+      this.curveNumber = 0
+      this.Campercentage = 0
     }
 
     this.p1 = this.curves[this.curveNumber].getPointAt(this.Campercentage);
