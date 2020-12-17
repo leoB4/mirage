@@ -176,7 +176,6 @@ export default class App {
       this.camera.camera.position.lerp(this.vectCam, 0.1)
       this.camLook.lerp(this.camTarget, 0.05)
       this.camera.camera.lookAt(this.camLook)
-      // this.camera.camera.rotation.y = Math.PI/10
       
       if (this.bloomComposer && this.finalComposer) {
         this.bgColor.lerp(this.bgTarget, 0.05)
@@ -408,7 +407,7 @@ export default class App {
         if (this.bgTarget !== BG_FOREST) {
           this.bgTarget = BG_FOREST
         }
-      } 
+      }
       if (this.Campercentage <= 0.995) {
         if (haloContainer.visible === true) {
           haloContainer.visible = false
