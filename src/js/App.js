@@ -114,6 +114,8 @@ export default class App {
     this.jsForest = options.jsForest
     this.jsCity = options.jsCity
     this.jsHalo = options.jsHalo
+
+    this.expoButton = options.expoButton
     
 
     this.setConfig()
@@ -125,6 +127,7 @@ export default class App {
     this.setWorld()
     this.setBloom()
     this.showNav()
+    this.changeCurve()
   }
   setRenderer() {
     // Set scene
@@ -506,6 +509,68 @@ export default class App {
       this.navigation.classList.toggle('js-openNav')
       this.jsMenu.classList.toggle('js-buttonNavOpen')
     })
+  }
+
+  changeCurve(){
+    console.log(this.expoButton);
+    this.expoButton.forEach(button => {
+      button.addEventListener('click', ()=>{
+        const forestContainer = this.world.container.children.find(child=>child.name === "forest")
+        const haloContainer = this.world.container.children.find(child=>child.name === "halo")
+        const cityContainer = this.world.container.children.find(child=>child.name === "city")
+        const CONTAINERS = [forestContainer, cityContainer, haloContainer]
+
+        this.newCurveNumber = parseInt(button.dataset.curve)
+        console.log(this.newCurveNumber);
+        this.curveNumber = this.newCurveNumber
+        this.Campercentage = 0.006
+        this.MoveCamera()
+
+        CONTAINERS.forEach((container, index)=>{
+          if(index === this.curveNumber){
+            container.visible = true
+          } else{
+            container.visible = false
+          }
+        })
+
+        this.body.classList.toggle('navOpen')
+        this.navigation.classList.toggle('js-openNav')
+        this.jsMenu.classList.toggle('js-buttonNavOpen')
+      })
+    });
+
+    // this.expoButton.addEventListener('click', ()=>{
+    //   const forestContainer = this.world.container.children.find(child=>child.name === "forest")
+    //   console.log(this.world.container.children);
+    //   const haloContainer = this.world.container.children.find(child=>child.name === "halo")
+    //   const cityContainer = this.world.container.children.find(child=>child.name === "city")
+    //   this.newCurveNumber = parseInt(this.expoForest.dataset.curve)
+    //   console.log(this.curveNumber);
+    //   this.curveNumber = this.newCurveNumber
+    //   this.Campercentage = 0.5
+    //   this.MoveCamera()
+    //   if (this.scene.fog !== FOG_FOREST) {
+    //     this.scene.fog = FOG_FOREST
+    //   }
+    //   if (this.bgTarget !== BG_FOREST) {
+    //     this.bgTarget = BG_FOREST
+    //   }
+    //   if (this.camTarget !== CAM_FOREST)  {
+    //     this.camTarget = CAM_FOREST
+    //   }
+    //   if(this.curveNumber !== this.newCurveNumber){
+    //     forestContainer.visible = true
+    //     cityContainer.visible = false
+    //     haloContainer.visible = false
+    //   }
+    //   console.log(this.curveNumber);
+      
+    //   this.body.classList.toggle('navOpen')
+    //   this.navigation.classList.toggle('js-openNav')
+    //   this.jsMenu.classList.toggle('js-buttonNavOpen')
+      
+    // })
   }
 
 }

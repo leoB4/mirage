@@ -9,5 +9,7 @@ new App({
   navigation: document.querySelector('.nav'),
   jsForest: document.querySelector('.js-forest'),
   jsCity: document.querySelector('.js-city'),
-  jsHalo: document.querySelector('.js-halo')
+  jsHalo: document.querySelector('.js-halo'),
+
+  expoButton: document.querySelectorAll('.expoButton'),
 })
