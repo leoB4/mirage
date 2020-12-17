@@ -69,7 +69,7 @@ export default class World {
       listener: this.listener
     })
     this.halo.container.position.set(this.DECAL_SCENE*2,0,0)
-    this.halo.container.visible = false
+    // this.halo.container.visible = false
     this.container.add(this.halo.container)
   }
 
@@ -81,7 +81,7 @@ export default class World {
       listener: this.listener
     })
     this.city.container.position.set(this.DECAL_SCENE,0,0)
-    this.city.container.visible = false
+    // this.city.container.visible = false
     this.container.add(this.city.container)
   }
 
