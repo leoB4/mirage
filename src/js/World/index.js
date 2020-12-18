@@ -65,6 +65,7 @@ export default class World {
         this.jsLaunch.addEventListener('click', ()=>{
           this.init()
           setTimeout(() => {
+            this.assets.trigger('worldReady')
             this.homeDiv.style.opacity = 0
             setTimeout(()=>{
               this.homeDiv.remove()
