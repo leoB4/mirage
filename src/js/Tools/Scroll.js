@@ -14,7 +14,6 @@ export default class Scroll extends EventEmitter {
 
   wheelMove(event) {
     if (!this.body.classList.contains('navOpen')) {
-      console.log('coucou')
       this.delta = this.delta + event.deltaY
       this.trigger('wheelMove')
     }
