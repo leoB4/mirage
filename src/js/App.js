@@ -331,9 +331,8 @@ export default class App {
   }
 
   MoveCamera() {
-    this.Campercentage += this.wheel.getDelta() * 0.00007
-
     if (this.forestContainer && this.cityContainer && this.haloContainer) {
+      this.Campercentage += this.wheel.getDelta() * 0.00007
       if (this.curveNumber === 0) {
         // CAM TARGET
         if (this.camTarget !== CAM_FOREST) {

@@ -5,6 +5,7 @@ export default class Scroll extends EventEmitter {
     super()
 
     this.delta = 0
+    this.body = document.querySelector('body')
 
     document.addEventListener('wheel', (event) => {
         this.wheelMove(event)
@@ -12,8 +13,11 @@ export default class Scroll extends EventEmitter {
   }
 
   wheelMove(event) {
-    this.delta = this.delta + event.deltaY
-    this.trigger('wheelMove')
+    if (!this.body.classList.contains('navOpen')) {
+      console.log('coucou')
+      this.delta = this.delta + event.deltaY
+      this.trigger('wheelMove')
+    }
   }
 
   getDelta() {
