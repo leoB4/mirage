@@ -26,9 +26,9 @@ export default class ModelCity {
     const audioTenteLoader = new AudioLoader()
     audioTenteLoader.load( AmbianceSound, (buffer)=> {
       this.soundVille.setBuffer( buffer )
-      this.soundVille.setRefDistance( 10 )
+      this.soundVille.setRefDistance( 7 )
       this.soundVille.setLoop(true)
-      this.soundVille.setVolume(1)
+      this.soundVille.setVolume(2)
       this.soundVille.play()
     })
 
@@ -36,9 +36,9 @@ export default class ModelCity {
     const audioGravat = new AudioLoader()
     audioGravat.load( RockSound, (buffer)=> {
       this.soundGravat.setBuffer( buffer )
-      this.soundGravat.setRefDistance( 3 )
+      this.soundGravat.setRefDistance( 5 )
       this.soundGravat.setLoop(true)
-      this.soundGravat.setVolume(1)
+      this.soundGravat.setVolume(2)
       this.soundGravat.play()
     })
 

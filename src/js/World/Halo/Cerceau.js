@@ -27,7 +27,7 @@ export default class Cerceau {
       this.sound.setBuffer( buffer )
       this.sound.setRefDistance( 10 )
       this.sound.setLoop(true)
-      this.sound.setVolume(0.3)
+      this.sound.setVolume(1.2)
       this.sound.play()
     })
     this.cerceau.add(this.sound)

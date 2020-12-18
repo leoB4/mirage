@@ -38,9 +38,9 @@ export default class WavyDisc {
         const audioLoader = new AudioLoader()
         audioLoader.load( waterSound, (buffer)=> {
           this.sound.setBuffer( buffer )
-          this.sound.setRefDistance( 10 )
+          this.sound.setRefDistance( 5 )
           this.sound.setLoop(true)
-          this.sound.setVolume(3)
+          this.sound.setVolume(2)
           this.sound.play()
         })
 
@@ -48,9 +48,9 @@ export default class WavyDisc {
         const audioAmbiance = new AudioLoader()
         audioAmbiance.load( AmbianceSound, (buffer)=> {
           this.soundAmbiance.setBuffer( buffer )
-          this.soundAmbiance.setRefDistance( 6 )
+          this.soundAmbiance.setRefDistance(3)
           this.soundAmbiance.setLoop(true)
-          this.soundAmbiance.setVolume(1)
+          this.soundAmbiance.setVolume(2)
           this.soundAmbiance.play()
         })
 

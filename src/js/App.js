@@ -39,7 +39,7 @@ import World from '@world/index.js'
 const ENTIRE_SCENE = 0,
   BLOOM_SCENE = 1
 
-const DECAL_SCENE = -800
+const DECAL_SCENE = -1000
 
 const END_SCENE = 0.995
 const START_SCENE = 0.005
@@ -574,6 +574,7 @@ export default class App {
   changeCurve() {
     this.expoButton.forEach(button => {
         button.addEventListener('click', () => {
+          this.showedInfo = document.querySelector('.showed')
           if (this.forestContainer && this.cityContainer && this.haloContainer) {
             const CONTAINERS = [this.forestContainer, this.cityContainer, this.haloContainer]
 
@@ -595,6 +596,7 @@ export default class App {
             this.body.classList.toggle('navOpen')
             this.navigation.classList.toggle('js-openNav')
             this.jsMenu.classList.toggle('js-buttonNavOpen')
+            this.showedInfo.classList.toggle('showed')
           }
         })
     })
@@ -602,9 +604,11 @@ export default class App {
 
   showNav() {
     this.jsMenu.addEventListener('click', () => {
+      
       this.body.classList.toggle('navOpen')
       this.navigation.classList.toggle('js-openNav')
       this.jsMenu.classList.toggle('js-buttonNavOpen')
+      
     })
   }
 

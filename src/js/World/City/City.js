@@ -40,7 +40,7 @@ export default class City {
 
   setSpotLightCity() {
     this.spotDebris = new SpotLightCity({
-      position: {x:10,y:-10,z:-10},
+      position: {x:10,y:-15,z:-10},
       color: 0xFFFFFF,
       intensity: 1.5,
       distancePoint: 20,
