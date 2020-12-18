@@ -340,19 +340,19 @@ export default class App {
         }
 
         // UI INFO
-        if (this.Campercentage > 0.05 && this.Campercentage < 0.2) {
+        if (this.Campercentage > 0.2 && this.Campercentage < 0.5) {
           this.jsForest.style.opacity = 1
           this.jsForest.classList.add('showed')
         }
-        if (this.Campercentage > 0.2 && this.jsForest.classList.contains('showed')) {
+        if (this.Campercentage > 0.5 && this.jsForest.classList.contains('showed')) {
           this.jsForest.style.opacity = 0
           this.jsForest.classList.remove('showed')
         }
-        if (this.Campercentage < 0.2 && this.Campercentage > 0.05 && !this.jsForest.classList.contains('showed')) {
+        if (this.Campercentage < 0.5 && this.Campercentage > 0.2 && !this.jsForest.classList.contains('showed')) {
           this.jsForest.style.opacity = 1
           this.jsForest.classList.add('showed')
         }
-        if (this.Campercentage < 0.05 && this.jsForest.classList.contains('showed')) {
+        if (this.Campercentage < 0.2 && this.jsForest.classList.contains('showed')) {
           this.jsForest.style.opacity = 0
           this.jsForest.classList.remove('showed')
         }
@@ -412,19 +412,19 @@ export default class App {
         }
 
         // UI INFO
-        if (this.Campercentage > 0.05 && this.Campercentage < 0.2) {
+        if (this.Campercentage > 0.2 && this.Campercentage < 0.5) {
           this.jsCity.style.opacity = 1
           this.jsCity.classList.add('showed')
         }
-        if (this.Campercentage > 0.2 && this.jsCity.classList.contains('showed')) {
+        if (this.Campercentage > 0.5 && this.jsCity.classList.contains('showed')) {
           this.jsCity.style.opacity = 0
           this.jsCity.classList.remove('showed')
         }
-        if (this.Campercentage < 0.2 && this.Campercentage > 0.05 && !this.jsCity.classList.contains('showed')) {
+        if (this.Campercentage < 0.5 && this.Campercentage > 0.2 && !this.jsCity.classList.contains('showed')) {
           this.jsCity.style.opacity = 1
           this.jsCity.classList.add('showed')
         }
-        if (this.Campercentage < 0.05 && this.jsCity.classList.contains('showed')) {
+        if (this.Campercentage < 0.2 && this.jsCity.classList.contains('showed')) {
           this.jsCity.style.opacity = 0
           this.jsCity.classList.remove('showed')
         }
@@ -485,19 +485,19 @@ export default class App {
         }
 
         // UI INFO
-        if (this.Campercentage > 0.05 && this.Campercentage < 0.2) {
+        if (this.Campercentage > 0.2 && this.Campercentage < 0.5) {
           this.jsHalo.style.opacity = 1
           this.jsHalo.classList.add('showed')
         }
-        if (this.Campercentage > 0.2 && this.jsHalo.classList.contains('showed')) {
+        if (this.Campercentage > 0.5 && this.jsHalo.classList.contains('showed')) {
           this.jsHalo.style.opacity = 0
           this.jsHalo.classList.remove('showed')
         }
-        if (this.Campercentage < 0.2 && this.Campercentage > 0.05 && !this.jsHalo.classList.contains('showed')) {
+        if (this.Campercentage < 0.5 && this.Campercentage > 0.2 && !this.jsHalo.classList.contains('showed')) {
           this.jsHalo.style.opacity = 1
           this.jsHalo.classList.add('showed')
         }
-        if (this.Campercentage < 0.05 && this.jsHalo.classList.contains('showed')) {
+        if (this.Campercentage < 0.2 && this.jsHalo.classList.contains('showed')) {
           this.jsHalo.style.opacity = 0
           this.jsHalo.classList.remove('showed')
         }
