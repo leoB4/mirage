@@ -139,6 +139,7 @@ export default class App {
 
     // Document query Selector for UI
     this.jsMenu = options.jsMenu
+    this.jsCredits = options.jsCredits
     this.body = options.body
     this.navigation = options.navigation
     this.allNav = options.allNav
@@ -155,6 +156,7 @@ export default class App {
     this.setWorld()
     this.setBloom()
     this.showNav()
+    this.showCredits()
     this.changeCurve()
   }
 
@@ -605,11 +607,23 @@ export default class App {
   showNav() {
     this.jsMenu.addEventListener('click', () => {
       
-      this.body.classList.toggle('navOpen')
-      this.navigation.classList.toggle('js-openNav')
-      this.jsMenu.classList.toggle('js-buttonNavOpen')
+      if(this.body.classList.contains('creditsOpen') ){
+        this.body.classList.remove('creditsOpen')
+      }else{
+        this.body.classList.toggle('navOpen')
+        this.navigation.classList.toggle('js-openNav')
+        this.jsMenu.classList.toggle('js-buttonNavOpen')
+      }
       
     })
+  }
+
+  showCredits(){
+    this.jsCredits.addEventListener('click', ()=> {
+
+      this.body.classList.add('creditsOpen')
+
+    } )
   }
 
 }

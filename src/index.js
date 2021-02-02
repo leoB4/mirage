@@ -5,6 +5,7 @@ new App({
   canvas: document.querySelector('#_canvas'),
 
   jsMenu: document.querySelector('.js-menu'),
+  jsCredits: document.querySelector('.js-credits'),
   body: document.querySelector('body'),
   navigation: document.querySelector('.nav'),
   allNav: document.querySelector('.allNav'),
